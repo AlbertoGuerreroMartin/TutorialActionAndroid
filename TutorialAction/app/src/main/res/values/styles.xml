@@ -5,4 +5,12 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <!-- Ripple theme -->
+    <style name="Ripple">
+        <item name="rippleDuration">350</item>
+        <item name="rippleBackground">@android:color/white</item>
+        <item name="rippleColor">@android:color/holo_blue_light</item>
+        <item name="rippleDelayClick">false</item>
+    </style>
+
 </resources>

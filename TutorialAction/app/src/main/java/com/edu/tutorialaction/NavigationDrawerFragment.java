@@ -21,6 +21,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.balysv.materialripple.MaterialRippleLayout;
+
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -31,7 +33,7 @@ import butterknife.InjectViews;
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
-public class NavigationDrawerFragment extends Fragment {
+public class NavigationDrawerFragment extends Fragment implements View.OnClickListener {
 
     /**
      * Remember the position of the selected item.
@@ -56,8 +58,8 @@ public class NavigationDrawerFragment extends Fragment {
 
     private DrawerLayout mDrawerLayout;
 
-    @InjectViews({R.id.section1, R.id.section2, R.id.section3})
-    List<TextView> drawerSections;
+    @InjectViews({R.id.section_1, R.id.section_2, R.id.section_3})
+    List<MaterialRippleLayout> drawerSections;
 
     private View mFragmentContainerView;
 
@@ -81,9 +83,6 @@ public class NavigationDrawerFragment extends Fragment {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
         }
-
-        // Select either the default item (0) or the last selected item.
-//        selectItem(mCurrentSelectedPosition);
     }
 
     @Override
@@ -98,7 +97,50 @@ public class NavigationDrawerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         ButterKnife.inject(this, view);
+
+        for(MaterialRippleLayout section : drawerSections) {
+            section.setOnClickListener(this);
+        }
+
+        // Select either the default item (0) or the last selected item.
+        selectItem(mCurrentSelectedPosition);
         return view;
+    }
+
+    @Override public void onClick(View v) {
+        if(v.getId() == R.id.section1) {
+            Toast.makeText(getActivity().getApplicationContext(), "Sección 1", Toast.LENGTH_SHORT).show();
+        } else if(v.getId() == R.id.section2) {
+            Toast.makeText(getActivity().getApplicationContext(), "Sección 2", Toast.LENGTH_SHORT).show();
+        } else if(v.getId() == R.id.section3) {
+            Toast.makeText(getActivity().getApplicationContext(), "Sección 3", Toast.LENGTH_SHORT).show();
+        }
+
+        selectItem(drawerSections.indexOf((MaterialRippleLayout) v.getParent()));
+    }
+
+    //--- Butterknife interfaces ---
+    static final ButterKnife.Action<View> UNCHECK = new ButterKnife.Action<View>() {
+        @Override
+        public void apply(View view, int index) {
+            ((MaterialRippleLayout) view).setRippleBackground(Color.WHITE);
+        }
+    };
+    //------------------------------
+
+    private void selectItem(int position) {
+        mCurrentSelectedPosition = position;
+
+        ButterKnife.apply(drawerSections, UNCHECK);
+        drawerSections.get(position).setRippleBackground(Color.LTGRAY);
+
+
+        if (mDrawerLayout != null) {
+            mDrawerLayout.closeDrawer(mFragmentContainerView);
+        }
+        if (mCallbacks != null) {
+            mCallbacks.onNavigationDrawerItemSelected(position);
+        }
     }
 
     public boolean isDrawerOpen() {
@@ -177,31 +219,6 @@ public class NavigationDrawerFragment extends Fragment {
         });
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-    }
-
-
-
-    //--- Butterknife interfaces ---
-    static final ButterKnife.Action<View> UNCHECK = new ButterKnife.Action<View>() {
-        @Override
-        public void apply(View view, int index) {
-
-        }
-    };
-    //------------------------------
-
-    private void selectItem(int position) {
-        mCurrentSelectedPosition = position;
-
-        ButterKnife.apply(drawerSections, UNCHECK);
-        drawerSections.get(position).setBackgroundColor(Color.BLUE);
-
-        if (mDrawerLayout != null) {
-            mDrawerLayout.closeDrawer(mFragmentContainerView);
-        }
-        if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
-        }
     }
 
     @Override
