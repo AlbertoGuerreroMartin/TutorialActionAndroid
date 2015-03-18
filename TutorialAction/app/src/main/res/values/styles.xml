@@ -4,8 +4,9 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Material colors: http://www.google.com/design/spec/style/color.html#color-color-palette -->
         <item name="colorPrimary">#3F51B5</item>
-        <item name="android:colorPrimaryDark">#303F9F</item>
+        <item name="colorPrimaryDark">#303F9F</item>
         <item name="android:navigationBarColor">#3F51B5</item>
+        <item name="colorAccent">#F50057</item>
 
     </style>
 
