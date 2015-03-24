@@ -1,5 +1,9 @@
 package com.edu.tutorialaction.network;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import com.edu.tutorialaction.entity.Reserve;
 
 import java.util.List;
@@ -8,7 +12,7 @@ import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-import rx.subjects.PublishSubject;
+import rx.subjects.AsyncSubject;
 
 /**
  * Created by albertoguerreromartin on 16/03/15.
@@ -16,16 +20,18 @@ import rx.subjects.PublishSubject;
 public enum ReserveModel {
     INSTANCE;
 
-    private PublishSubject<List<Reserve>> request;
+    private static final String API_KEY_SHARED_PREFERENCES_KEY= "api_key";
 
-    public Subscription getReserves(Observer<List<Reserve>> observer) {
+    private AsyncSubject<List<Reserve>> request;
+
+    public Subscription getReserves(Observer<List<Reserve>> observer, Context context) {
         // If there's a request in background, subscribe to it
         if (request != null) {
             return request.subscribe(observer);
         }
 
         // Otherwise start a new request
-        request = PublishSubject.create();
+        request = AsyncSubject.create();
         Subscription subscription = request.subscribe(observer);
 
         // Clear pending request on load finished
@@ -37,7 +43,8 @@ public enum ReserveModel {
         });
 
         // Load reserves from network
-        NetworkManager.INSTANCE.getClient().getReserves()
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        NetworkManager.INSTANCE.getClient().getReserves(sharedPreferences.getString(API_KEY_SHARED_PREFERENCES_KEY, ""))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(request);

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Tutorial Action</string>
 
+    <string name="title_activity_login">Inicio de sesión</string>
     <string name="title_section1">Sección 1</string>
     <string name="title_section2">Sección 2</string>
     <string name="title_section3">Sección 3</string>

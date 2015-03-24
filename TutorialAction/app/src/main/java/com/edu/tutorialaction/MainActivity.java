@@ -38,6 +38,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         getSupportActionBar().setElevation(2);
     }
 
+//    @Override
+//    public void onBackPressed() {
+//    }
+
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
