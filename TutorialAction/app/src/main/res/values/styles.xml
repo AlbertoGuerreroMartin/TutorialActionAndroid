@@ -18,4 +18,13 @@
         <item name="rippleDelayClick">false</item>
     </style>
 
+    <!--Cell ripple-->
+    <style name="CellRipple">
+        <item name="rippleDuration">250</item>
+        <item name="rippleBackground">@android:color/white</item>
+        <item name="rippleColor">@android:color/holo_blue_light</item>
+        <item name="rippleDelayClick">false</item>
+    </style>
+
+
 </resources>
