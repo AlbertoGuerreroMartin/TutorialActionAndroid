@@ -69,6 +69,8 @@ public class ReservesAdapter extends BaseAdapter {
         }
 
         ((TextView) convertView.findViewById(R.id.fullname)).setText(reserves.get(position).getFirstname() + " " + reserves.get(position).getLastname());
+        ((TextView) convertView.findViewById(R.id.course_name)).setText(reserves.get(position).getCourseName());
+        ((TextView) convertView.findViewById(R.id.date)).setText(reserves.get(position).getDate() + " | " + reserves.get(position).getHour());
 
         return convertView;
     }

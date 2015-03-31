@@ -15,6 +15,7 @@ public class Reserve {
     @Expose private String motive;
     @Expose private String date;
     @Expose private String hour;
+    @Expose private String courseName;
 
     public String getFirstname() {
         return firstname;
@@ -35,4 +36,9 @@ public class Reserve {
     public String getHour() {
         return hour;
     }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
 }
