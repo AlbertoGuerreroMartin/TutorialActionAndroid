@@ -1,6 +1,7 @@
 <com.welbits.izanrodrigo.emptyview.library.EmptyView
     android:id="@+id/emptyView"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:emptyText="No hay reservas"
@@ -18,11 +19,24 @@
             android:layout_height="wrap_content"
             android:padding="10dp"/>
 
-        <Button
-            android:id="@+id/logout_button"
+        <!--<Button-->
+            <!--android:id="@+id/logout_button"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Logout"/>-->
+
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/fab"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Logout"/>
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_add_white_24dp"
+            fab:fab_colorNormal="#F50057"
+            fab:fab_colorPressed="#F50057"
+            fab:fab_colorRipple="#FF80AB" />
+
     </LinearLayout>
 
 </com.welbits.izanrodrigo.emptyview.library.EmptyView>

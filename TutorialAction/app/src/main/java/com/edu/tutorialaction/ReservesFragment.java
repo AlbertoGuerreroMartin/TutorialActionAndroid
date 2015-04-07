@@ -30,7 +30,6 @@ public class ReservesFragment extends RxLoaderFragment<List<Reserve>> {
 
     @InjectView(R.id.reservesList) ListView reservesList;
     @InjectView(R.id.emptyView) EmptyView emptyView;
-    @InjectView(R.id.logout_button) Button logoutButton;
     private ReservesAdapter reservesAdapter;
 
     @Override
@@ -46,33 +45,33 @@ public class ReservesFragment extends RxLoaderFragment<List<Reserve>> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addSubscription(AuthModel.INSTANCE.logout(new Observer<Map<String, String>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Map<String, String> stringStringMap) {
-                        System.out.println("Logout status: " + stringStringMap.get("status"));
-                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-                        sharedPreferences.edit().remove("api_key").apply();
-
-                        Intent intent = new Intent(getActivity(), LoginActivity.class);
-                        startActivity(intent);
-                        getActivity().finish();
-                    }
-                }, getActivity().getApplicationContext()));
-            }
-        });
+//        logoutButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                addSubscription(AuthModel.INSTANCE.logout(new Observer<Map<String, String>>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(Map<String, String> stringStringMap) {
+//                        System.out.println("Logout status: " + stringStringMap.get("status"));
+//                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+//                        sharedPreferences.edit().remove("api_key").apply();
+//
+//                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+//                        startActivity(intent);
+//                        getActivity().finish();
+//                    }
+//                }, getActivity().getApplicationContext()));
+//            }
+//        });
 
         this.reservesList.setAdapter(this.reservesAdapter = new ReservesAdapter(getActivity()));
         this.emptyView.retry("Reintentar", new Runnable() {

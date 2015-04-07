@@ -74,11 +74,27 @@
                     <TextView
                         android:id="@+id/section3"
                         android:layout_width="240dp"
-                        android:layout_height="500dp"
+                        android:layout_height="50dp"
                         android:gravity="center_vertical"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
                         android:text="@string/title_section3"/>
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:id="@+id/logout_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Ripple" >
+
+                    <TextView
+                        android:id="@+id/logout_section_textview"
+                        android:layout_width="240dp"
+                        android:layout_height="50dp"
+                        android:gravity="center_vertical"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="Cerrar sesión"/>
                 </com.balysv.materialripple.MaterialRippleLayout>
 
             </LinearLayout>

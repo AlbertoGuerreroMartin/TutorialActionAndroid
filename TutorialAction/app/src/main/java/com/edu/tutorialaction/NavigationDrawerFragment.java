@@ -2,7 +2,7 @@ package com.edu.tutorialaction;
 
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -18,22 +18,25 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.edu.tutorialaction.network.AuthModel;
+import com.edu.tutorialaction.network.RxLoaderFragment;
 
 import java.util.List;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectViews;
+import rx.Observer;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
-public class NavigationDrawerFragment extends Fragment implements View.OnClickListener {
+public class NavigationDrawerFragment extends RxLoaderFragment<Map<String, String>> implements View.OnClickListener {
 
     /**
      * Remember the position of the selected item.
@@ -58,7 +61,7 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
 
     private DrawerLayout mDrawerLayout;
 
-    @InjectViews({R.id.section_1, R.id.section_2, R.id.section_3})
+    @InjectViews({R.id.section_1, R.id.section_2, R.id.section_3, R.id.logout_section})
     List<MaterialRippleLayout> drawerSections;
 
     private View mFragmentContainerView;
@@ -108,15 +111,51 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
     }
 
     @Override public void onClick(View v) {
-        if(v.getId() == R.id.section1) {
-            Toast.makeText(getActivity().getApplicationContext(), "Sección 1", Toast.LENGTH_SHORT).show();
-        } else if(v.getId() == R.id.section2) {
-            Toast.makeText(getActivity().getApplicationContext(), "Sección 2", Toast.LENGTH_SHORT).show();
-        } else if(v.getId() == R.id.section3) {
-            Toast.makeText(getActivity().getApplicationContext(), "Sección 3", Toast.LENGTH_SHORT).show();
+
+        switch (v.getId()) {
+            case R.id.section1:
+                Toast.makeText(getActivity().getApplicationContext(), "Sección 1", Toast.LENGTH_SHORT).show();
+                selectItem(drawerSections.indexOf((MaterialRippleLayout) v.getParent()));
+                break;
+
+            case R.id.section2:
+                Toast.makeText(getActivity().getApplicationContext(), "Sección 2", Toast.LENGTH_SHORT).show();
+                selectItem(drawerSections.indexOf((MaterialRippleLayout) v.getParent()));
+                break;
+
+            case R.id.section3:
+                Toast.makeText(getActivity().getApplicationContext(), "Sección 3", Toast.LENGTH_SHORT).show();
+                selectItem(drawerSections.indexOf((MaterialRippleLayout) v.getParent()));
+                break;
+
+            case R.id.logout_section_textview:
+                System.out.println("ATTEMPT TO LOGOUT");
+                addSubscription(AuthModel.INSTANCE.logout(new Observer<Map<String, String>>() {
+                    @Override
+                    public void onCompleted() {
+                        System.out.println("LOGOUT COMPLETED");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        System.out.println("LOGOUT ERROR");
+                    }
+
+                    @Override
+                    public void onNext(Map<String, String> stringStringMap) {
+                        System.out.println("LOGOUT NEXT");
+                        System.out.println("Logout status: " + stringStringMap.get("status"));
+                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+                        sharedPreferences.edit().remove("api_key").apply();
+
+                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }
+                }, getActivity().getApplicationContext()));
+                break;
         }
 
-        selectItem(drawerSections.indexOf((MaterialRippleLayout) v.getParent()));
     }
 
     //--- Butterknife interfaces ---
@@ -288,6 +327,11 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
 
     private ActionBar getActionBar() {
         return ((MainActivity) getActivity()).getSupportActionBar();
+    }
+
+    @Override
+    public void onNext(Map<String, String> stringStringMap) {
+
     }
 
     /**
