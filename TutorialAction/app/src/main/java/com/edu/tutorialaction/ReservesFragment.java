@@ -1,5 +1,6 @@
 package com.edu.tutorialaction;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ListView;
 import com.edu.tutorialaction.entity.Reserve;
 import com.edu.tutorialaction.network.ReserveModel;
 import com.edu.tutorialaction.network.RxLoaderFragment;
+import com.melnykov.fab.FloatingActionButton;
 import com.welbits.izanrodrigo.emptyview.library.EmptyView;
 
 import java.util.List;
@@ -23,6 +25,7 @@ public class ReservesFragment extends RxLoaderFragment<List<Reserve>> {
 
     @InjectView(R.id.reservesList) ListView reservesList;
     @InjectView(R.id.emptyView) EmptyView emptyView;
+    @InjectView(R.id.fab) FloatingActionButton floatingActionButton;
     private ReservesAdapter reservesAdapter;
 
     @Override
@@ -39,6 +42,8 @@ public class ReservesFragment extends RxLoaderFragment<List<Reserve>> {
         super.onActivityCreated(savedInstanceState);
 
         this.reservesList.setAdapter(this.reservesAdapter = new ReservesAdapter(getActivity()));
+        this.floatingActionButton.attachToListView(this.reservesList);
+
         this.emptyView.retry("Reintentar", new Runnable() {
             @Override
             public void run() {

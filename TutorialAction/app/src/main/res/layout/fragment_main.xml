@@ -1,14 +1,13 @@
 <com.welbits.izanrodrigo.emptyview.library.EmptyView
     android:id="@+id/emptyView"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:emptyText="No hay reservas"
     app:errorText="Error de red"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -17,7 +16,19 @@
             android:id="@+id/reservesList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"/>
+            android:padding="10dp" />
+
+
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_add_white_24dp"
+            app:fab_colorNormal="#F50057"
+            app:fab_colorPressed="#F50057"
+            app:fab_colorRipple="#FF80AB" />
 
         <!--<Button-->
             <!--android:id="@+id/logout_button"-->
@@ -25,18 +36,6 @@
             <!--android:layout_height="wrap_content"-->
             <!--android:text="Logout"/>-->
 
-        <com.melnykov.fab.FloatingActionButton
-            android:id="@+id/fab"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="16dp"
-            android:src="@drawable/ic_add_white_24dp"
-            fab:fab_colorNormal="#F50057"
-            fab:fab_colorPressed="#F50057"
-            fab:fab_colorRipple="#FF80AB" />
-
-    </LinearLayout>
+    </FrameLayout>
 
 </com.welbits.izanrodrigo.emptyview.library.EmptyView>

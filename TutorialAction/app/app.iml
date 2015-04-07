@@ -104,7 +104,7 @@
     <orderEntry type="library" exported="" name="support-annotations-22.0.0" level="project" />
     <orderEntry type="library" exported="" name="android-emptyview-1.0-" level="project" />
     <orderEntry type="library" exported="" name="material-ripple-1.0.0" level="project" />
-    <orderEntry type="library" exported="" name="annotation-2.0.1" level="project" />
     <orderEntry type="library" exported="" name="library-2.4.0" level="project" />
+    <orderEntry type="library" exported="" name="annotation-2.0.1" level="project" />
   </component>
 </module>

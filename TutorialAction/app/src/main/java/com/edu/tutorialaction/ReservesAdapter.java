@@ -27,6 +27,8 @@ public class ReservesAdapter extends BaseAdapter {
 
     public void addReserves(List<Reserve> reserves) {
         this.reserves.addAll(reserves);
+        this.reserves.addAll(reserves);
+        this.reserves.addAll(reserves);
         notifyDataSetChanged();
     }
 
