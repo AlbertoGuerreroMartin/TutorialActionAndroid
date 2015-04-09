@@ -15,8 +15,10 @@
         <ListView
             android:id="@+id/reservesList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp" />
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="5dp" />
 
 
         <com.melnykov.fab.FloatingActionButton

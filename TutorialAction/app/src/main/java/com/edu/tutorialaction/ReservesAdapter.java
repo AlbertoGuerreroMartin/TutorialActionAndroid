@@ -1,15 +1,19 @@
 package com.edu.tutorialaction;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.edu.tutorialaction.entity.Reserve;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -36,10 +40,24 @@ public class ReservesAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public boolean removeReserve(Reserve reserve) {
-        boolean removed = reserves.remove(reserve);
-        notifyDataSetChanged();
-        return removed;
+    public boolean removeReserve(int reserveID) {
+        boolean remove = false;
+        Reserve reserve;
+        Iterator<Reserve> reserveIterator = reserves.iterator();
+
+        do {
+            reserve = reserveIterator.next();
+            if(reserve.getReserveid() == reserveID) {
+                remove = true;
+            }
+        } while (reserveIterator.hasNext() && !remove);
+
+        if(remove) {
+            reserves.remove(reserve);
+            notifyDataSetChanged();
+        }
+
+        return remove;
     }
 
     public void clearReserves() {
@@ -72,6 +90,35 @@ public class ReservesAdapter extends BaseAdapter {
         ((TextView) convertView.findViewById(R.id.fullname)).setText(reserves.get(position).getFirstname() + " " + reserves.get(position).getLastname());
         ((TextView) convertView.findViewById(R.id.course_name)).setText(reserves.get(position).getCourseName());
         ((TextView) convertView.findViewById(R.id.date)).setText(reserves.get(position).getDate() + " | " + reserves.get(position).getHour());
+
+
+        // More info layout
+        MaterialRippleLayout moreInfoButton = (MaterialRippleLayout) convertView.findViewById(R.id.moreInfoButton);
+
+        // Company text + description
+        final View moreInfoLayout = convertView.findViewById(R.id.moreInfoLayout);
+        TextView description = (TextView) convertView.findViewById(R.id.reserveMotive);
+        String motiveText = "<b>Motivo: </b>" + reserves.get(position).getMotive();
+        description.setText(Html.fromHtml(motiveText));
+
+        // More info button
+        final TextView moreInfoText = (TextView) convertView.findViewById(R.id.text);
+        moreInfoText.setText("Más información");
+        moreInfoText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_arrow_expand , 0, 0, 0);
+
+        moreInfoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show/Hide layout (TODO: Animated)
+                boolean wasExpanded = moreInfoLayout.getVisibility() == View.VISIBLE;
+                moreInfoLayout.setVisibility(wasExpanded ? View.GONE : View.VISIBLE);
+
+                // Adjust compound button
+                int icon = wasExpanded ? R.drawable.ic_arrow_expand : R.drawable.ic_arrow_collapse;
+                moreInfoText.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0);
+                moreInfoText.setText(wasExpanded ? "Más información" : "Menos información");
+            }
+        });
 
         return convertView;
     }

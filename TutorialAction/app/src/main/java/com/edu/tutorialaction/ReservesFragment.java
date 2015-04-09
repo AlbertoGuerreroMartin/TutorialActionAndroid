@@ -1,27 +1,33 @@
 package com.edu.tutorialaction;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.edu.tutorialaction.entity.Reserve;
+import com.edu.tutorialaction.network.AuthModel;
 import com.edu.tutorialaction.network.ReserveModel;
 import com.edu.tutorialaction.network.RxLoaderFragment;
 import com.melnykov.fab.FloatingActionButton;
 import com.welbits.izanrodrigo.emptyview.library.EmptyView;
 
 import java.util.List;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import rx.Observer;
 
 /**
  * Created by albertoguerreromartin on 16/03/15.
  */
-public class ReservesFragment extends RxLoaderFragment<List<Reserve>> {
+public class ReservesFragment extends RxLoaderFragment<Object> {
 
     @InjectView(R.id.reservesList) ListView reservesList;
     @InjectView(R.id.emptyView) EmptyView emptyView;
@@ -65,9 +71,9 @@ public class ReservesFragment extends RxLoaderFragment<List<Reserve>> {
     }
 
     @Override
-    public void onNext(List<Reserve> reserves) {
+    public void onNext(Object reserves) {
         this.reservesAdapter.clearReserves();
-        this.reservesAdapter.addReserves(reserves);
+        this.reservesAdapter.addReserves((List<Reserve>) reserves);
 
         if(this.reservesAdapter.isEmpty()) {
             this.emptyView.displayEmpty();

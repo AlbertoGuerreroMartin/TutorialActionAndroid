@@ -10,7 +10,7 @@ public class Reserve {
 
     public static final SimpleSerializer<Reserve> SERIALIZER = new SimpleSerializer<>(Reserve.class);
 
-    @Expose private String reserveid;
+    @Expose private int reserveid;
     @Expose private String firstname;
     @Expose private String lastname;
     @Expose private String motive;
@@ -19,7 +19,7 @@ public class Reserve {
     @Expose private String courseName;
 
 
-    public String getReserveid() {
+    public int getReserveid() {
         return reserveid;
     }
 

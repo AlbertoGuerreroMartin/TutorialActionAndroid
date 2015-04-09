@@ -7,6 +7,7 @@ import java.util.Map;
 
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
+import retrofit.http.DELETE;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
@@ -45,5 +46,8 @@ public enum NetworkManager {
 
         @GET("/api/user/reserves")
         Observable<List<Reserve>> getReserves(@Header("Api-Key") String apiKey);
+
+        @DELETE("/api/reserves/remove")
+        Observable<Map<String, String>> removeReserve(@Header("Api-Key") String apiKey, @Field("reserveID") int reserveID);
     }
 }

@@ -22,9 +22,9 @@ public enum ReserveModel {
 
     private static final String API_KEY_SHARED_PREFERENCES_KEY= "api_key";
 
-    private AsyncSubject<List<Reserve>> request;
+    private AsyncSubject<Object> request;
 
-    public Subscription getReserves(Observer<List<Reserve>> observer, Context context) {
+    public Subscription getReserves(Observer<Object> observer, Context context) {
         // If there's a request in background, subscribe to it
         if (request != null) {
             return request.subscribe(observer);
@@ -35,7 +35,7 @@ public enum ReserveModel {
         Subscription subscription = request.subscribe(observer);
 
         // Clear pending request on load finished
-        request.subscribe(new EndObserver<List<Reserve>>() {
+        request.subscribe(new EndObserver<Object>() {
             @Override
             public void onEnd() {
                 request = null;
@@ -52,5 +52,32 @@ public enum ReserveModel {
         return subscription;
     }
 
+    public Subscription removeReserve(Observer<Object> observer, Context context, int reserveID) {
+        // If there's a request in background, subscribe to it
+        if (request != null) {
+            return request.subscribe(observer);
+        }
+
+        // Otherwise start a new request
+        request = AsyncSubject.create();
+        Subscription subscription = request.subscribe(observer);
+
+        // Clear pending request on load finished
+        request.subscribe(new EndObserver<Object>() {
+            @Override
+            public void onEnd() {
+                request = null;
+            }
+        });
+
+        // Load reserves from network
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        NetworkManager.INSTANCE.getClient().removeReserve(sharedPreferences.getString(API_KEY_SHARED_PREFERENCES_KEY, ""), reserveID)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(request);
+
+        return subscription;
+    }
 
 }

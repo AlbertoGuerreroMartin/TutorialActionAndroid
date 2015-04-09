@@ -18,7 +18,7 @@
         <item name="rippleDelayClick">false</item>
     </style>
 
-    <!--Cell ripple-->
+    <!-- Cell ripple-->
     <style name="CellRipple">
         <item name="rippleDuration">250</item>
         <item name="rippleBackground">@android:color/white</item>
@@ -26,5 +26,21 @@
         <item name="rippleDelayClick">false</item>
     </style>
 
+    <!-- Delete button ripple-->
+    <style name="DeleteButtonRipple">
+        <item name="rippleDuration">250</item>
+        <item name="rippleBackground">@android:color/white</item>
+        <item name="rippleColor">@android:color/darker_gray</item>
+        <item name="rippleDelayClick">false</item>
+    </style>
+
+    <!-- Card Clickable Text-->
+    <style name="CardClickableText">
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:minHeight">30dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:drawablePadding">15dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
 
 </resources>
