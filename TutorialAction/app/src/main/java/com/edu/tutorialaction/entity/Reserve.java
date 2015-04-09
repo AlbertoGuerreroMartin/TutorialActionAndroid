@@ -10,12 +10,18 @@ public class Reserve {
 
     public static final SimpleSerializer<Reserve> SERIALIZER = new SimpleSerializer<>(Reserve.class);
 
+    @Expose private String reserveid;
     @Expose private String firstname;
     @Expose private String lastname;
     @Expose private String motive;
     @Expose private String date;
     @Expose private String hour;
     @Expose private String courseName;
+
+
+    public String getReserveid() {
+        return reserveid;
+    }
 
     public String getFirstname() {
         return firstname;
