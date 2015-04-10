@@ -39,17 +39,6 @@ import rx.Observer;
 public class NavigationDrawerFragment extends RxLoaderFragment<Map<String, String>> implements View.OnClickListener {
 
     /**
-     * Remember the position of the selected item.
-     */
-    private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
-
-    /**
-     * Per the design guidelines, you should show the drawer on launch until the user manually
-     * expands it. This shared preference tracks this.
-     */
-    private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
-
-    /**
      * A pointer to the current callbacks instance (the Activity).
      */
     private NavigationDrawerCallbacks mCallbacks;
@@ -58,17 +47,13 @@ public class NavigationDrawerFragment extends RxLoaderFragment<Map<String, Strin
      * Helper component that ties the action bar to the navigation drawer.
      */
     private ActionBarDrawerToggle mDrawerToggle;
-
     private DrawerLayout mDrawerLayout;
+    private int currentSelectedSectionId;
 
     @InjectViews({R.id.section_1, R.id.section_2, R.id.section_3, R.id.logout_section})
     List<MaterialRippleLayout> drawerSections;
 
     private View mFragmentContainerView;
-
-    private int mCurrentSelectedPosition = 0;
-    private boolean mFromSavedInstanceState;
-    private boolean mUserLearnedDrawer;
 
     public NavigationDrawerFragment() {
     }
@@ -76,16 +61,6 @@ public class NavigationDrawerFragment extends RxLoaderFragment<Map<String, Strin
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Read in the flag indicating whether or not the user has demonstrated awareness of the
-        // drawer. See PREF_USER_LEARNED_DRAWER for details.
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
-
-        if (savedInstanceState != null) {
-            mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
-            mFromSavedInstanceState = true;
-        }
     }
 
     @Override
@@ -106,56 +81,64 @@ public class NavigationDrawerFragment extends RxLoaderFragment<Map<String, Strin
         }
 
         // Select either the default item (0) or the last selected item.
-        selectItem(mCurrentSelectedPosition);
+        selectItem(0, new ReservesFragment());
+        currentSelectedSectionId = R.id.section1;
+
         return view;
     }
 
     @Override public void onClick(View v) {
 
-        switch (v.getId()) {
-            case R.id.section1:
-                Toast.makeText(getActivity().getApplicationContext(), "Sección 1", Toast.LENGTH_SHORT).show();
-                selectItem(drawerSections.indexOf((MaterialRippleLayout) v.getParent()));
-                break;
+        if(currentSelectedSectionId == v.getId()) {
+            mDrawerLayout.closeDrawer(mFragmentContainerView);
+        } else {
 
-            case R.id.section2:
-                Toast.makeText(getActivity().getApplicationContext(), "Sección 2", Toast.LENGTH_SHORT).show();
-                selectItem(drawerSections.indexOf((MaterialRippleLayout) v.getParent()));
-                break;
+            currentSelectedSectionId = v.getId();
 
-            case R.id.section3:
-                Toast.makeText(getActivity().getApplicationContext(), "Sección 3", Toast.LENGTH_SHORT).show();
-                selectItem(drawerSections.indexOf((MaterialRippleLayout) v.getParent()));
-                break;
+            switch (v.getId()) {
+                case R.id.section1:
+                    Toast.makeText(getActivity().getApplicationContext(), "Sección 1", Toast.LENGTH_SHORT).show();
+                    selectItem(drawerSections.indexOf((MaterialRippleLayout) v.getParent()), new ReservesFragment());
+                    break;
 
-            case R.id.logout_section_textview:
-                System.out.println("ATTEMPT TO LOGOUT");
-                addSubscription(AuthModel.INSTANCE.logout(new Observer<Map<String, String>>() {
-                    @Override
-                    public void onCompleted() {
-                        System.out.println("LOGOUT COMPLETED");
-                    }
+                case R.id.section2:
+                    Toast.makeText(getActivity().getApplicationContext(), "Sección 2", Toast.LENGTH_SHORT).show();
+//                selectItem(drawerSections.indexOf((MaterialRippleLayout) v.getParent()));
+                    break;
 
-                    @Override
-                    public void onError(Throwable e) {
-                        System.out.println("LOGOUT ERROR");
-                    }
+                case R.id.section3:
+                    Toast.makeText(getActivity().getApplicationContext(), "Sección 3", Toast.LENGTH_SHORT).show();
+//                selectItem(drawerSections.indexOf((MaterialRippleLayout) v.getParent()));
+                    break;
 
-                    @Override
-                    public void onNext(Map<String, String> stringStringMap) {
-                        System.out.println("LOGOUT NEXT");
-                        System.out.println("Logout status: " + stringStringMap.get("status"));
-                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-                        sharedPreferences.edit().remove("api_key").apply();
+                case R.id.logout_section_textview:
+                    System.out.println("ATTEMPT TO LOGOUT");
+                    addSubscription(AuthModel.INSTANCE.logout(new Observer<Map<String, String>>() {
+                        @Override
+                        public void onCompleted() {
+                            System.out.println("LOGOUT COMPLETED");
+                        }
 
-                        Intent intent = new Intent(getActivity(), LoginActivity.class);
-                        startActivity(intent);
-                        getActivity().finish();
-                    }
-                }, getActivity().getApplicationContext()));
-                break;
+                        @Override
+                        public void onError(Throwable e) {
+                            System.out.println("LOGOUT ERROR");
+                        }
+
+                        @Override
+                        public void onNext(Map<String, String> stringStringMap) {
+                            System.out.println("LOGOUT NEXT");
+                            System.out.println("Logout status: " + stringStringMap.get("status"));
+                            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+                            sharedPreferences.edit().remove("api_key").apply();
+
+                            Intent intent = new Intent(getActivity(), LoginActivity.class);
+                            startActivity(intent);
+                            getActivity().finish();
+                        }
+                    }, getActivity().getApplicationContext()));
+                    break;
+            }
         }
-
     }
 
     //--- Butterknife interfaces ---
@@ -167,18 +150,16 @@ public class NavigationDrawerFragment extends RxLoaderFragment<Map<String, Strin
     };
     //------------------------------
 
-    private void selectItem(int position) {
-        mCurrentSelectedPosition = position;
+    private void selectItem(int position, RxLoaderFragment<Object> fragment) {
 
         ButterKnife.apply(drawerSections, UNCHECK);
         drawerSections.get(position).setRippleBackground(Color.LTGRAY);
-
 
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
         if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
+            mCallbacks.onNavigationDrawerItemSelected(position, fragment);
         }
     }
 
@@ -230,24 +211,10 @@ public class NavigationDrawerFragment extends RxLoaderFragment<Map<String, Strin
                     return;
                 }
 
-                if (!mUserLearnedDrawer) {
-                    // The user manually opened the drawer; store this flag to prevent auto-showing
-                    // the navigation drawer automatically in the future.
-                    mUserLearnedDrawer = true;
-                    SharedPreferences sp = PreferenceManager
-                            .getDefaultSharedPreferences(getActivity());
-                    sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
-                }
-
                 getActivity().invalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
         };
 
-        // If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,
-        // per the navigation drawer design guidelines.
-        if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
-            mDrawerLayout.openDrawer(mFragmentContainerView);
-        }
 
         // Defer code dependent on restoration of previous instance state.
         mDrawerLayout.post(new Runnable() {
@@ -274,12 +241,6 @@ public class NavigationDrawerFragment extends RxLoaderFragment<Map<String, Strin
     public void onDetach() {
         super.onDetach();
         mCallbacks = null;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
     }
 
     @Override
@@ -341,6 +302,6 @@ public class NavigationDrawerFragment extends RxLoaderFragment<Map<String, Strin
         /**
          * Called when an item in the navigation drawer is selected.
          */
-        void onNavigationDrawerItemSelected(int position);
+        void onNavigationDrawerItemSelected(int position, RxLoaderFragment<Object> fragment);
     }
 }

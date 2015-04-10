@@ -1,11 +1,14 @@
 package com.edu.tutorialaction;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
+
+import com.edu.tutorialaction.network.RxLoaderFragment;
 
 
 public class MainActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -41,11 +44,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 //    }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
+    public void onNavigationDrawerItemSelected(int position, RxLoaderFragment<Object> fragment) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, new ReservesFragment())
+                .replace(R.id.container, fragment)
                 .commit();
     }
 
