@@ -1,43 +1,49 @@
-<com.welbits.izanrodrigo.emptyview.library.EmptyView
-    android:id="@+id/emptyView"
+<android.support.v4.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:emptyText="No hay reservas"
-    app:errorText="Error de red"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent" >
 
-    <FrameLayout
+    <com.welbits.izanrodrigo.emptyview.library.EmptyView
+        android:id="@+id/emptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        app:emptyText="No hay reservas"
+        app:errorText="Error de red"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <ListView
-            android:id="@+id/reservesList"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="10dp"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="5dp" />
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/reservesList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="5dp" />
 
 
-        <com.melnykov.fab.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="16dp"
-            android:src="@drawable/ic_add_white_24dp"
-            app:fab_colorNormal="#F50057"
-            app:fab_colorPressed="#F50057"
-            app:fab_colorRipple="#FF80AB" />
+            <com.melnykov.fab.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_add_white_24dp"
+                app:fab_colorNormal="#F50057"
+                app:fab_colorPressed="#F50057"
+                app:fab_colorRipple="#FF80AB" />
 
-        <!--<Button-->
-            <!--android:id="@+id/logout_button"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Logout"/>-->
+            <!--<Button-->
+                <!--android:id="@+id/logout_button"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Logout"/>-->
 
-    </FrameLayout>
+        </FrameLayout>
 
-</com.welbits.izanrodrigo.emptyview.library.EmptyView>
+    </com.welbits.izanrodrigo.emptyview.library.EmptyView>
+</android.support.v4.widget.SwipeRefreshLayout>

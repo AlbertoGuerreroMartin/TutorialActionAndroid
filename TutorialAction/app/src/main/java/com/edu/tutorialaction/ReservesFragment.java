@@ -1,6 +1,7 @@
 package com.edu.tutorialaction;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +21,9 @@ import butterknife.InjectView;
 /**
  * Created by albertoguerreromartin on 16/03/15.
  */
-public class ReservesFragment extends RxLoaderFragment<Object> {
+public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeRefreshLayout.OnRefreshListener {
 
+    @InjectView(R.id.swipe_container) SwipeRefreshLayout swipeRefreshLayout;
     @InjectView(R.id.reservesList) ListView reservesList;
     @InjectView(R.id.emptyView) EmptyView emptyView;
     @InjectView(R.id.fab) FloatingActionButton floatingActionButton;
@@ -40,7 +42,18 @@ public class ReservesFragment extends RxLoaderFragment<Object> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        //--- Set refresh ---
+        this.swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeColors(
+                getResources().getColor(R.color.colorPrimary),
+                getResources().getColor(R.color.colorAccent));
+        //-------------------
+
+        //--- Set list adapter ---
         this.reservesList.setAdapter(this.reservesAdapter = new ReservesAdapter(getActivity()));
+        //------------------------
+
+
         this.floatingActionButton.attachToListView(this.reservesList);
 
         this.emptyView.retry("Reintentar", new Runnable() {
@@ -53,7 +66,6 @@ public class ReservesFragment extends RxLoaderFragment<Object> {
     }
 
     private void load() {
-        emptyView.startLoading();
         addSubscription(ReserveModel.INSTANCE.getReserves(ReservesFragment.this, getActivity().getApplicationContext()));
     }
 
@@ -61,10 +73,12 @@ public class ReservesFragment extends RxLoaderFragment<Object> {
     public void onError(Throwable e) {
         super.onError(e);
         this.emptyView.errorLoading();
+        this.swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void onNext(Object reserves) {
+        this.swipeRefreshLayout.setRefreshing(false);
         this.reservesAdapter.clearReserves();
         this.reservesAdapter.addReserves((List<Reserve>) reserves);
 
@@ -74,4 +88,18 @@ public class ReservesFragment extends RxLoaderFragment<Object> {
             this.emptyView.successLoading();
         }
     }
+
+
+
+
+
+    //--- Swipe refresh callback ---
+    // Refresh reserves list
+
+    @Override
+    public void onRefresh() {
+        load();
+    }
+
+    //------------------------------
 }
