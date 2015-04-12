@@ -1,28 +1,21 @@
 package com.edu.tutorialaction;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.edu.tutorialaction.entity.Reserve;
-import com.edu.tutorialaction.network.AuthModel;
 import com.edu.tutorialaction.network.ReserveModel;
 import com.edu.tutorialaction.network.RxLoaderFragment;
 import com.melnykov.fab.FloatingActionButton;
 import com.welbits.izanrodrigo.emptyview.library.EmptyView;
 
 import java.util.List;
-import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import rx.Observer;
 
 /**
  * Created by albertoguerreromartin on 16/03/15.
@@ -36,7 +29,7 @@ public class ReservesFragment extends RxLoaderFragment<Object> {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_reserves, container, false);
 
         ButterKnife.inject(this, view);
 
