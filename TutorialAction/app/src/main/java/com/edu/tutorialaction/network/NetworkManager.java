@@ -48,6 +48,6 @@ public enum NetworkManager {
         Observable<List<Reserve>> getReserves(@Header("Api-Key") String apiKey);
 
         @DELETE("/api/reserves/remove")
-        Observable<Map<String, String>> removeReserve(@Header("Api-Key") String apiKey, @Field("reserveID") int reserveID);
+        Observable<List<Reserve>> removeReserve(@Header("Api-Key") String apiKey, @Field("reserveID") int reserveID);
     }
 }

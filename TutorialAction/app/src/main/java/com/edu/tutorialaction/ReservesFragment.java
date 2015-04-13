@@ -21,7 +21,7 @@ import butterknife.InjectView;
 /**
  * Created by albertoguerreromartin on 16/03/15.
  */
-public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeRefreshLayout.OnRefreshListener {
+public class ReservesFragment extends RxLoaderFragment<List<Reserve>> implements SwipeRefreshLayout.OnRefreshListener {
 
     @InjectView(R.id.swipe_container) SwipeRefreshLayout swipeRefreshLayout;
     @InjectView(R.id.reservesList) ListView reservesList;
@@ -77,10 +77,10 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
     }
 
     @Override
-    public void onNext(Object reserves) {
+    public void onNext(List<Reserve> reserves) {
         this.swipeRefreshLayout.setRefreshing(false);
         this.reservesAdapter.clearReserves();
-        this.reservesAdapter.addReserves((List<Reserve>) reserves);
+        this.reservesAdapter.addReserves(reserves);
 
         if(this.reservesAdapter.isEmpty()) {
             this.emptyView.displayEmpty();
