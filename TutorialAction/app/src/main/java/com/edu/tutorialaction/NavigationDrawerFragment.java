@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.edu.tutorialaction.entity.Reserve;
 import com.edu.tutorialaction.network.AuthModel;
 import com.edu.tutorialaction.network.RxLoaderFragment;
 
@@ -150,7 +151,7 @@ public class NavigationDrawerFragment extends RxLoaderFragment<Map<String, Strin
     };
     //------------------------------
 
-    private void selectItem(int position, RxLoaderFragment<Object> fragment) {
+    private void selectItem(int position, RxLoaderFragment<List<Reserve>> fragment) {
 
         ButterKnife.apply(drawerSections, UNCHECK);
         drawerSections.get(position).setRippleBackground(Color.LTGRAY);
@@ -302,6 +303,6 @@ public class NavigationDrawerFragment extends RxLoaderFragment<Map<String, Strin
         /**
          * Called when an item in the navigation drawer is selected.
          */
-        void onNavigationDrawerItemSelected(int position, RxLoaderFragment<Object> fragment);
+        void onNavigationDrawerItemSelected(int position, RxLoaderFragment<List<Reserve>> fragment);
     }
 }

@@ -8,7 +8,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
+import com.edu.tutorialaction.entity.Reserve;
 import com.edu.tutorialaction.network.RxLoaderFragment;
+
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -44,7 +47,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 //    }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position, RxLoaderFragment<Object> fragment) {
+    public void onNavigationDrawerItemSelected(int position, RxLoaderFragment<List<Reserve>> fragment) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()

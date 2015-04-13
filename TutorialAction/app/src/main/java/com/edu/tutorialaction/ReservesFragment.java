@@ -1,11 +1,14 @@
 package com.edu.tutorialaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.edu.tutorialaction.entity.Reserve;
 import com.edu.tutorialaction.network.ReserveModel;
@@ -13,6 +16,7 @@ import com.edu.tutorialaction.network.RxLoaderFragment;
 import com.melnykov.fab.FloatingActionButton;
 import com.welbits.izanrodrigo.emptyview.library.EmptyView;
 
+import java.util.Date;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -55,6 +59,13 @@ public class ReservesFragment extends RxLoaderFragment<List<Reserve>> implements
 
 
         this.floatingActionButton.attachToListView(this.reservesList);
+        this.floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), NewReserveActivity.class);
+                startActivity(intent);
+            }
+        });
 
         this.emptyView.retry("Reintentar", new Runnable() {
             @Override
