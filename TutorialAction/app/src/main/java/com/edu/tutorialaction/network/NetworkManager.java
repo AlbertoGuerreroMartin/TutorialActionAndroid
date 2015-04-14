@@ -1,6 +1,7 @@
 package com.edu.tutorialaction.network;
 
 import com.edu.tutorialaction.entity.Reserve;
+import com.edu.tutorialaction.entity.User;
 
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,10 @@ public enum NetworkManager {
 
         @GET("/api/user/reserves")
         Observable<List<Reserve>> getReserves(@Header("Api-Key") String apiKey);
+
+        @GET("/api/user/info")
+        Observable<User> getInfo(@Header("Api-Key") String apiKey);
+
 
         @DELETE("/api/reserves/remove")
         Observable<List<Reserve>> removeReserve(@Header("Api-Key") String apiKey, @Field("reserveID") int reserveID);

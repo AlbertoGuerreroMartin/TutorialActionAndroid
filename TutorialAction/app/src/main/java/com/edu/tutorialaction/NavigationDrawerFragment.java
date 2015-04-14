@@ -151,7 +151,7 @@ public class NavigationDrawerFragment extends RxLoaderFragment<Map<String, Strin
     };
     //------------------------------
 
-    private void selectItem(int position, RxLoaderFragment<List<Reserve>> fragment) {
+    private void selectItem(int position, RxLoaderFragment<Object> fragment) {
 
         ButterKnife.apply(drawerSections, UNCHECK);
         drawerSections.get(position).setRippleBackground(Color.LTGRAY);
@@ -303,6 +303,6 @@ public class NavigationDrawerFragment extends RxLoaderFragment<Map<String, Strin
         /**
          * Called when an item in the navigation drawer is selected.
          */
-        void onNavigationDrawerItemSelected(int position, RxLoaderFragment<List<Reserve>> fragment);
+        void onNavigationDrawerItemSelected(int position, RxLoaderFragment<Object> fragment);
     }
 }

@@ -7,7 +7,6 @@ import android.preference.PreferenceManager;
 import com.edu.tutorialaction.entity.Reserve;
 
 import java.util.List;
-import java.util.Map;
 
 import rx.Observer;
 import rx.Subscription;
@@ -23,9 +22,9 @@ public enum ReserveModel {
 
     private static final String API_KEY_SHARED_PREFERENCES_KEY= "api_key";
 
-    private AsyncSubject<List<Reserve>> request;
+    private AsyncSubject<Object> request;
 
-    public Subscription getReserves(Observer<List<Reserve>> observer, Context context) {
+    public Subscription getReserves(Observer<Object> observer, Context context) {
         // If there's a request in background, subscribe to it
         if (request != null) {
             return request.subscribe(observer);
@@ -53,7 +52,7 @@ public enum ReserveModel {
         return subscription;
     }
 
-    public Subscription removeReserve(Observer<List<Reserve>> observer, Context context, int reserveID) {
+    public Subscription removeReserve(Observer<Object> observer, Context context, int reserveID) {
         // If there's a request in background, subscribe to it
         if (request != null) {
             return request.subscribe(observer);

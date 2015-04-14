@@ -7,31 +7,41 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import com.edu.tutorialaction.entity.Course;
+
+import java.util.List;
+
 /**
  * Created by albertoguerreromartin on 13/04/15.
  */
-public class SelectCourseDialog extends DialogFragment {
+public class SingleChoiceDialog extends DialogFragment {
 
-    public interface SelectCourseDialogListener {
-        void onDialogPositiveClick(SelectCourseDialog dialog);
-        void onDialogNegativeClick(SelectCourseDialog dialog);
+
+    public interface SingleChoiceDialogListener {
+        void onDialogPositiveClick(SingleChoiceDialog dialog);
+        void onDialogNegativeClick(SingleChoiceDialog dialog);
     }
 
-    private int selectedCourseID;
-    private String selectedCourse;
+    private CharSequence[] items;
+    private int selectedItemID;
+    private String selectedItem;
 
-    private NewReserveActivity newReserveActivity;
+    private SingleChoiceDialogListener parentActivity;
 
-    public void setSelectedCourseID(int selectedCourseID) {
-        this.selectedCourseID = selectedCourseID;
+    public void setChoiceItems(CharSequence[] items) {
+        this.items = items;
     }
 
-    public int getSelectedCourseID() {
-        return selectedCourseID;
+    public void setSelectedItemID(int selectedItemID) {
+        this.selectedItemID = selectedItemID;
     }
 
-    public String getSelectedCourse() {
-        return selectedCourse;
+    public int getSelectedItemID() {
+        return selectedItemID;
+    }
+
+    public String getSelectedItem() {
+        return selectedItem;
     }
 
 
@@ -41,7 +51,7 @@ public class SelectCourseDialog extends DialogFragment {
         // Verify that the host activity implements the callback interface
         try {
             // Instantiate the NoticeDialogListener so we can send events to the host
-            newReserveActivity = (NewReserveActivity) activity;
+            parentActivity = (SingleChoiceDialogListener) activity;
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(activity.toString()
@@ -53,28 +63,32 @@ public class SelectCourseDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        //--- Default values ---
+        selectedItemID = 0;
+        selectedItem = (String) items[0];
+        //----------------------
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setSingleChoiceItems(new CharSequence[]{
-                "Administración de Bases de Datos", "Aplicación y Gestión de la Información"
-        }, selectedCourseID, new DialogInterface.OnClickListener() {
+
+        builder.setSingleChoiceItems(items, selectedItemID, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                selectedCourseID = which;
-                selectedCourse = which == 0 ? "Administración de Bases de Datos" : "Aplicación y Gestión de la Información";
+                selectedItemID = which;
+                selectedItem = (String) items[selectedItemID];
             }
         });
 
         builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                newReserveActivity.onDialogPositiveClick(SelectCourseDialog.this);
+                parentActivity.onDialogPositiveClick(SingleChoiceDialog.this);
             }
         });
 
         builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                newReserveActivity.onDialogNegativeClick(SelectCourseDialog.this);
+                parentActivity.onDialogNegativeClick(SingleChoiceDialog.this);
             }
         });
 

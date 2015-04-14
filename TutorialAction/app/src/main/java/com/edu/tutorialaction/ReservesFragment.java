@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.edu.tutorialaction.entity.Reserve;
 import com.edu.tutorialaction.network.ReserveModel;
 import com.edu.tutorialaction.network.RxLoaderFragment;
+import com.google.gson.Gson;
 import com.melnykov.fab.FloatingActionButton;
 import com.welbits.izanrodrigo.emptyview.library.EmptyView;
 
@@ -25,7 +26,7 @@ import butterknife.InjectView;
 /**
  * Created by albertoguerreromartin on 16/03/15.
  */
-public class ReservesFragment extends RxLoaderFragment<List<Reserve>> implements SwipeRefreshLayout.OnRefreshListener {
+public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeRefreshLayout.OnRefreshListener {
 
     @InjectView(R.id.swipe_container) SwipeRefreshLayout swipeRefreshLayout;
     @InjectView(R.id.reservesList) ListView reservesList;
@@ -62,7 +63,9 @@ public class ReservesFragment extends RxLoaderFragment<List<Reserve>> implements
         this.floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Gson gson = new Gson();
                 Intent intent = new Intent(getActivity(), NewReserveActivity.class);
+                intent.putExtra("courses", gson.toJson(((MainActivity) getActivity()).getUserInfo().getCourses()));
                 startActivity(intent);
             }
         });
@@ -88,10 +91,10 @@ public class ReservesFragment extends RxLoaderFragment<List<Reserve>> implements
     }
 
     @Override
-    public void onNext(List<Reserve> reserves) {
+    public void onNext(Object reserves) {
         this.swipeRefreshLayout.setRefreshing(false);
         this.reservesAdapter.clearReserves();
-        this.reservesAdapter.addReserves(reserves);
+        this.reservesAdapter.addReserves((List<Reserve>) reserves);
 
         if(this.reservesAdapter.isEmpty()) {
             this.emptyView.displayEmpty();

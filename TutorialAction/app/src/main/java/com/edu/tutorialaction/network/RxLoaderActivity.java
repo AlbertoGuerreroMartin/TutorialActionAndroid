@@ -18,7 +18,7 @@ public abstract class RxLoaderActivity<T> extends Activity implements Observer<T
         }
     }
 
-    protected void addSubscription(Subscription subscription) {
+    public void addSubscription(Subscription subscription) {
         if (subscription != null && !subscription.isUnsubscribed()) {
             this.subscription.add(subscription);
         }
