@@ -35,9 +35,7 @@ public class NewReserveActivity extends ActionBarActivity implements SingleChoic
         setContentView(R.layout.activity_new_reserve);
         ButterKnife.inject(this);
 
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<Course>>(){}.getType();
-        courses = gson.fromJson(getIntent().getStringExtra("courses"), listType);
+        courses = Course.LIST_SERIALIZER.fromBundle(getIntent().getExtras(), "courses");
 
         selectedCourseID = 0;
         selectCourseEditText.setOnClickListener(new View.OnClickListener() {

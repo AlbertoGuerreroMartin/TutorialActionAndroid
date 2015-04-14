@@ -2,6 +2,7 @@ package com.edu.tutorialaction.entity;
 
 import com.edu.tutorialaction.util.SimpleSerializer;
 import com.google.gson.annotations.Expose;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public class Course {
 
-    public static final SimpleSerializer<Course> SERIALIZER = new SimpleSerializer<>(Course.class);
+    public static final SimpleSerializer<List<Course>> LIST_SERIALIZER = new SimpleSerializer<>(new TypeToken<List<Course>>(){} );
 
     @Expose private int courseID;
     @Expose private String courseName;

@@ -1,6 +1,5 @@
 package com.edu.tutorialaction.entity;
 
-import com.edu.tutorialaction.util.SimpleSerializer;
 import com.google.gson.annotations.Expose;
 
 import java.util.List;
@@ -9,8 +8,6 @@ import java.util.List;
  * Created by albertoguerreromartin on 14/04/15.
  */
 public class User {
-
-    public static final SimpleSerializer<User> SERIALIZER = new SimpleSerializer<>(User.class);
 
     @Expose private int userID;
     @Expose private String username;

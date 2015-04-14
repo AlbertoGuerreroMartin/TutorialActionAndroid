@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.edu.tutorialaction.entity.Course;
 import com.edu.tutorialaction.entity.Reserve;
 import com.edu.tutorialaction.network.ReserveModel;
 import com.edu.tutorialaction.network.RxLoaderFragment;
@@ -63,9 +64,8 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
         this.floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Gson gson = new Gson();
                 Intent intent = new Intent(getActivity(), NewReserveActivity.class);
-                intent.putExtra("courses", gson.toJson(((MainActivity) getActivity()).getUserInfo().getCourses()));
+                intent.putExtra("courses", Course.LIST_SERIALIZER.toJson(((MainActivity) getActivity()).getUserInfo().getCourses()));
                 startActivity(intent);
             }
         });
