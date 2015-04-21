@@ -1,8 +1,10 @@
 package com.edu.tutorialaction.network;
 
 import com.edu.tutorialaction.entity.Reserve;
+import com.edu.tutorialaction.entity.TutorshipDay;
 import com.edu.tutorialaction.entity.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +16,7 @@ import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.POST;
+import retrofit.http.Path;
 import rx.Observable;
 
 public enum NetworkManager {
@@ -51,6 +54,12 @@ public enum NetworkManager {
         @GET("/api/user/info")
         Observable<User> getInfo(@Header("Api-Key") String apiKey);
 
+        @GET("/api/user/{teacherID}/timetable")
+        Observable<ArrayList<TutorshipDay>> getTimetable(@Header("Api-Key") String apiKey, @Path("teacherID") int teacherID);
+
+        @FormUrlEncoded
+        @POST("/api/reserves/create")
+        Observable<Map<String, String>> createReserve(@Header("Api-Key") String apiKey, @Field("teacherID") int teacherID, @Field("courseID") int courseID, @Field("tutorshipType") int tutorshipType, @Field("reason") String reason, @Field("date") String date, @Field("hour") String hour);
 
         @DELETE("/api/reserves/remove")
         Observable<List<Reserve>> removeReserve(@Header("Api-Key") String apiKey, @Field("reserveID") int reserveID);

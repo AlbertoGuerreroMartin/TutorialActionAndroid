@@ -23,6 +23,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile(name: 'android-emptyview-1.0', ext: 'aar')
+    compile(name: 'Material-CalendarView-Forked', ext: 'aar')
 
     apt 'com.hannesdorfmann.fragmentargs:processor:2.0.1'
     compile 'com.android.support:appcompat-v7:22.0.0'
@@ -38,5 +39,4 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.2.0'
     compile 'com.google.android.gms:play-services:6.5.87'
     compile 'com.rengwuxian.materialedittext:library:1.8.3'
-
 }

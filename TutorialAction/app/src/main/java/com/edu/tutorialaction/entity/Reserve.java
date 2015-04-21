@@ -31,6 +31,8 @@ public class Reserve {
         return lastname;
     }
 
+    public String getUserFullname() { return  firstname + " " + lastname; }
+
     public String getMotive() {
         return motive;
     }

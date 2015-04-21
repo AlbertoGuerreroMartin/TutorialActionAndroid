@@ -1,49 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:padding="10dp">
-
-    <Spinner
-        android:id="@+id/course_spinner"
-        style="@style/Widget.MyApp.HeaderBar.Spinner"
-        android:layout_width="wrap_content"
+    android:layout_width="match_parent">
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp" />
+        android:gravity="center_horizontal"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/courses_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:textStyle="bold"
+            android:text="@string/subject" />
+
+        <Spinner
+            android:id="@+id/courses_spinner"
+            style="@style/Widget.MyApp.HeaderBar.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp" />
 
 
-    <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/select_course"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        app:floatingLabel="normal"
-        app:baseColor="@color/colorPrimary"
-        app:primaryColor="@color/colorAccent"
-        android:editable="false"
-        android:hint="Asignatura"/>
-
-    <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/select_teacher"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        app:floatingLabel="normal"
-        app:baseColor="@color/colorPrimary"
-        app:primaryColor="@color/colorAccent"
-        android:editable="false"
-        android:hint="Profesor"/>
+        <TextView
+            android:id="@+id/teachers_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:textStyle="bold"
+            android:text="@string/teacher" />
+        <Spinner
+            android:id="@+id/teachers_spinner"
+            style="@style/Widget.MyApp.HeaderBar.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp" />
 
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/reason_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:textStyle="bold"
+            android:text="@string/tutorship_reason" />
+        <EditText
+            android:id="@+id/reason_edit_text"
+            android:inputType="textMultiLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:lines="10"
+            android:minLines="1"
+            android:scrollbars="vertical" />
+
+
+
+        <TextView
+            android:id="@+id/type_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:textStyle="bold"
+            android:text="@string/tutorship_type" />
+        <Spinner
+            android:id="@+id/type_spinner"
+            style="@style/Widget.MyApp.HeaderBar.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp" />
+
+
+        <TextView
+            android:id="@+id/date_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:textStyle="bold"
+            android:text="@string/date" />
+
+
+        <com.welbits.izanrodrigo.emptyview.library.EmptyView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/newReserve_emptyView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:errorText="Error de red" >
+
+            <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/date_calendar_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:mcv_arrowColor="@color/colorPrimary"
+                app:mcv_selectionColor="@color/colorAccent" />
+
+        </com.welbits.izanrodrigo.emptyview.library.EmptyView>
+
+        <TextView
+            android:id="@+id/hour_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:textStyle="bold"
+            android:text="@string/hour" />
+        <Spinner
+            android:id="@+id/hour_spinner"
+            style="@style/Widget.MyApp.HeaderBar.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp" />
+
+
+        <Button
+            android:id="@+id/newReserve_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/reserve"/>
+
+    </LinearLayout>
+</ScrollView>

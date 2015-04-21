@@ -31,7 +31,7 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
 
     @InjectView(R.id.swipe_container) SwipeRefreshLayout swipeRefreshLayout;
     @InjectView(R.id.reservesList) ListView reservesList;
-    @InjectView(R.id.emptyView) EmptyView emptyView;
+    @InjectView(R.id.reserves_emptyView) EmptyView emptyView;
     @InjectView(R.id.fab) FloatingActionButton floatingActionButton;
     private ReservesAdapter reservesAdapter;
 

@@ -87,7 +87,7 @@ public class ReservesAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.list_item_reserve, parent, false);
         }
 
-        ((TextView) convertView.findViewById(R.id.fullname)).setText(reserves.get(position).getFirstname() + " " + reserves.get(position).getLastname());
+        ((TextView) convertView.findViewById(R.id.fullname)).setText(reserves.get(position).getUserFullname());
         ((TextView) convertView.findViewById(R.id.course_name)).setText(reserves.get(position).getCourseName());
         ((TextView) convertView.findViewById(R.id.date)).setText(reserves.get(position).getDate() + " | " + reserves.get(position).getHour());
 

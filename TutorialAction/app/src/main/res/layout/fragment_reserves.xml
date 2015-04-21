@@ -5,12 +5,12 @@
     android:layout_height="match_parent" >
 
     <com.welbits.izanrodrigo.emptyview.library.EmptyView
-        android:id="@+id/emptyView"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/reserves_emptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:emptyText="No hay reservas"
-        app:errorText="Error de red"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        app:errorText="Error de red" >
 
         <FrameLayout
             android:layout_width="match_parent"

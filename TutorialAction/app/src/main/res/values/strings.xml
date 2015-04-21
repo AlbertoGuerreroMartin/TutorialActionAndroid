@@ -13,4 +13,12 @@
 
     <string name="action_settings">Settings</string>
     <string name="newReserve">Nueva reserva</string>
+    <string name="subject">Asignatura:</string>
+    <string name="teacher">Profesor:</string>
+    <string name="tutorship_reason">Motivo de la tutoría:</string>
+    <string name="tutorship_type">Tipo de tutoría:</string>
+    <string name="new_reserve_error">Error al obtener la lista de asignaturas.</string>
+    <string name="date">Fecha:</string>
+    <string name="hour">Hora:</string>
+    <string name="reserve">Reservar</string>
 </resources>
