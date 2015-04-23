@@ -1,4 +1,4 @@
-<android.support.v4.widget.SwipeRefreshLayout
+<com.edu.tutorialaction.util.CustomSwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipe_container"
     android:layout_width="match_parent"
@@ -46,4 +46,4 @@
         </FrameLayout>
 
     </com.welbits.izanrodrigo.emptyview.library.EmptyView>
-</android.support.v4.widget.SwipeRefreshLayout>
+</com.edu.tutorialaction.util.CustomSwipeRefreshLayout>

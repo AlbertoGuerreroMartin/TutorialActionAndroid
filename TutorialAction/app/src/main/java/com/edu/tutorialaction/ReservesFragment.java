@@ -3,22 +3,20 @@ package com.edu.tutorialaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.edu.tutorialaction.entity.Course;
 import com.edu.tutorialaction.entity.Reserve;
 import com.edu.tutorialaction.network.ReserveModel;
 import com.edu.tutorialaction.network.RxLoaderFragment;
-import com.google.gson.Gson;
+import com.edu.tutorialaction.util.CustomSwipeRefreshLayout;
 import com.melnykov.fab.FloatingActionButton;
 import com.welbits.izanrodrigo.emptyview.library.EmptyView;
 
-import java.util.Date;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -29,7 +27,7 @@ import butterknife.InjectView;
  */
 public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeRefreshLayout.OnRefreshListener {
 
-    @InjectView(R.id.swipe_container) SwipeRefreshLayout swipeRefreshLayout;
+    @InjectView(R.id.swipe_container) CustomSwipeRefreshLayout swipeRefreshLayout;
     @InjectView(R.id.reservesList) ListView reservesList;
     @InjectView(R.id.reserves_emptyView) EmptyView emptyView;
     @InjectView(R.id.fab) FloatingActionButton floatingActionButton;
@@ -49,8 +47,9 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
         super.onActivityCreated(savedInstanceState);
 
         //--- Set refresh ---
+        this.swipeRefreshLayout.setList(reservesList);
         this.swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setColorSchemeColors(
+        this.swipeRefreshLayout.setColorSchemeColors(
                 getResources().getColor(R.color.colorPrimary),
                 getResources().getColor(R.color.colorAccent));
         //-------------------
