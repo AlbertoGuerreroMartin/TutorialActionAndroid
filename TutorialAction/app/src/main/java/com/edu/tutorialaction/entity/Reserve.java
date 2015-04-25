@@ -13,6 +13,7 @@ public class Reserve {
     @Expose private int reserveid;
     @Expose private String firstname;
     @Expose private String lastname;
+    @Expose private String email;
     @Expose private String motive;
     @Expose private String date;
     @Expose private String hour;
@@ -32,6 +33,10 @@ public class Reserve {
     }
 
     public String getUserFullname() { return  firstname + " " + lastname; }
+
+    public String getEmail() {
+        return email;
+    }
 
     public String getMotive() {
         return motive;
