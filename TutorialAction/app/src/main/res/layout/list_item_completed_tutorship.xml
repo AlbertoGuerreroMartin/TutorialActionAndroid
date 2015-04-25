@@ -30,7 +30,7 @@
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:id="@+id/reserve_course_name"
+                    android:id="@+id/completed_tutorship_course_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
@@ -51,14 +51,14 @@
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:id="@+id/reserve_fullname"
+                    android:id="@+id/completed_tutorship_fullname"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
                     android:hint="Nombre del profesor" />
 
                 <TextView
-                    android:id="@+id/reserve_date"
+                    android:id="@+id/completed_tutorship_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="end"
@@ -68,13 +68,13 @@
 
 
             <FrameLayout
-                android:id="@+id/reserve_moreInfoLayout"
+                android:id="@+id/completed_tutorship_moreInfoLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/reserve_motive"
+                    android:id="@+id/completed_tutorship_motive"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="15dp"
@@ -85,12 +85,12 @@
 
             <include
                 layout="@layout/card_divider"
-                android:id="@+id/reserve_moreInfoDivider"
+                android:id="@+id/completed_tutorship_moreInfoDivider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"/>
 
             <include
-                android:id="@+id/reserve_moreInfoButton"
+                android:id="@+id/completed_tutorship_moreInfoButton"
                 layout="@layout/card_clickable_text"/>
 
         </LinearLayout>

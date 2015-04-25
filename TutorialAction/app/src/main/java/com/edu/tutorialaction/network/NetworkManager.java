@@ -1,6 +1,7 @@
 package com.edu.tutorialaction.network;
 
 import com.edu.tutorialaction.entity.Reserve;
+import com.edu.tutorialaction.entity.Tutorship;
 import com.edu.tutorialaction.entity.TutorshipDay;
 import com.edu.tutorialaction.entity.User;
 
@@ -50,6 +51,9 @@ public enum NetworkManager {
 
         @GET("/api/user/reserves")
         Observable<List<Reserve>> getReserves(@Header("Api-Key") String apiKey);
+
+        @GET("/api/user/completed")
+        Observable<List<Tutorship>> getCompletedTutorships(@Header("Api-Key") String apiKey);
 
         @GET("/api/user/info")
         Observable<User> getInfo(@Header("Api-Key") String apiKey);

@@ -1,12 +1,12 @@
 <com.edu.tutorialaction.util.CustomSwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/reserves_swipe_container"
+    android:id="@+id/completed_tutorships_swipe_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
     <com.welbits.izanrodrigo.emptyview.library.EmptyView
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/reserves_emptyView"
+        android:id="@+id/completed_tutorships_emptyView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:emptyText="No hay reservas"
@@ -18,7 +18,7 @@
             android:orientation="vertical">
 
             <ListView
-                android:id="@+id/reservesList"
+                android:id="@+id/completed_tutorships_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="10dp"
@@ -27,7 +27,7 @@
 
 
             <com.melnykov.fab.FloatingActionButton
-                android:id="@+id/reserves_fab"
+                android:id="@+id/completed_tutorships_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
@@ -36,12 +36,6 @@
                 app:fab_colorNormal="#F50057"
                 app:fab_colorPressed="#F50057"
                 app:fab_colorRipple="#FF80AB" />
-
-            <!--<Button-->
-                <!--android:id="@+id/logout_button"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Logout"/>-->
 
         </FrameLayout>
 

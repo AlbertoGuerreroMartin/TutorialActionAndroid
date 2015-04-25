@@ -109,7 +109,7 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
 
                 case R.id.completed_tutorships_text_view:
 //                    Toast.makeText(getActivity().getApplicationContext(), "Sección 2", Toast.LENGTH_SHORT).show();
-//                selectItem(drawerSections.indexOf((MaterialRippleLayout) v.getParent()));
+                selectItem(drawerSections.indexOf((MaterialRippleLayout) v.getParent()), new CompletedTutorshipsFragment());
                     break;
 
                 case R.id.logout_text_view:

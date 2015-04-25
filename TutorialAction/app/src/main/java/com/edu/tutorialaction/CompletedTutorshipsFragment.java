@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import com.edu.tutorialaction.entity.Course;
-import com.edu.tutorialaction.entity.Reserve;
-import com.edu.tutorialaction.network.ReserveModel;
+import com.edu.tutorialaction.entity.Tutorship;
+import com.edu.tutorialaction.network.CompletedTutorshipModel;
 import com.edu.tutorialaction.network.RxLoaderFragment;
 import com.edu.tutorialaction.util.CustomSwipeRefreshLayout;
 import com.melnykov.fab.FloatingActionButton;
@@ -18,29 +18,31 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeRefreshLayout.OnRefreshListener {
 
-    @InjectView(R.id.reserves_swipe_container) CustomSwipeRefreshLayout swipeRefreshLayout;
-    @InjectView(R.id.reservesList) ListView reservesList;
-    @InjectView(R.id.reserves_emptyView) EmptyView emptyView;
-    @InjectView(R.id.reserves_fab) FloatingActionButton floatingActionButton;
-    private ReservesAdapter reservesAdapter;
+public class CompletedTutorshipsFragment extends RxLoaderFragment<Object> implements SwipeRefreshLayout.OnRefreshListener {
+
+    @InjectView(R.id.completed_tutorships_swipe_container) CustomSwipeRefreshLayout swipeRefreshLayout;
+    @InjectView(R.id.completed_tutorships_list) ListView completedTutorshipsList;
+    @InjectView(R.id.completed_tutorships_emptyView) EmptyView emptyView;
+    @InjectView(R.id.completed_tutorships_fab) FloatingActionButton floatingActionButton;
+    private CompletedTutorshipsAdapter completedTutorshipsAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_reserves, container, false);
+        View view = inflater.inflate(R.layout.fragment_completed_tutorships, container, false);
 
         ButterKnife.inject(this, view);
 
         return view;
     }
+    
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         //--- Set refresh ---
-        this.swipeRefreshLayout.setList(reservesList);
+        this.swipeRefreshLayout.setList(completedTutorshipsList);
         this.swipeRefreshLayout.setOnRefreshListener(this);
         this.swipeRefreshLayout.setColorSchemeColors(
                 getResources().getColor(R.color.colorPrimary),
@@ -48,11 +50,13 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
         //-------------------
 
         //--- Set list adapter ---
-        this.reservesList.setAdapter(this.reservesAdapter = new ReservesAdapter(getActivity()));
+        this.completedTutorshipsList.setAdapter(this.completedTutorshipsAdapter = new CompletedTutorshipsAdapter(getActivity()));
         //------------------------
 
 
-        this.floatingActionButton.attachToListView(this.reservesList);
+        this.floatingActionButton.attachToListView(this.completedTutorshipsList);
+        /*
+        TODO: Implement NewCompletedTutorshipActivity
         this.floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +65,7 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
                 startActivity(intent);
             }
         });
+        */
 
         this.emptyView.retry("Reintentar", new Runnable() {
             @Override
@@ -72,7 +77,7 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
     }
 
     private void load() {
-        addSubscription(ReserveModel.INSTANCE.getReserves(ReservesFragment.this, getActivity().getApplicationContext()));
+        addSubscription(CompletedTutorshipModel.INSTANCE.getCompletedTutorships(CompletedTutorshipsFragment.this, getActivity().getApplicationContext()));
     }
 
     @Override
@@ -83,20 +88,17 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
     }
 
     @Override
-    public void onNext(Object reserves) {
+    public void onNext(Object completedTutorships) {
         this.swipeRefreshLayout.setRefreshing(false);
-        this.reservesAdapter.clearReserves();
-        this.reservesAdapter.addReserves((List<Reserve>) reserves);
+        this.completedTutorshipsAdapter.clearTutorships();
+        this.completedTutorshipsAdapter.addTutorships((List<Tutorship>) completedTutorships);
 
-        if(this.reservesAdapter.isEmpty()) {
+        if(this.completedTutorshipsAdapter.isEmpty()) {
             this.emptyView.displayEmpty();
         } else {
             this.emptyView.successLoading();
         }
     }
-
-
-
 
 
     //--- Swipe refresh callback ---

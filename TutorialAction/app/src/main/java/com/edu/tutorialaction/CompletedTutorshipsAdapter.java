@@ -7,67 +7,68 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
 import com.balysv.materialripple.MaterialRippleLayout;
-import com.edu.tutorialaction.entity.Reserve;
+import com.edu.tutorialaction.entity.Tutorship;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+public class CompletedTutorshipsAdapter extends BaseAdapter {
 
-public class ReservesAdapter extends BaseAdapter {
-
-    private final ArrayList<Reserve> reserves;
+    private final ArrayList<Tutorship> tutorships;
     private final Context context;
 
-    public ReservesAdapter(Context context) {
+    public CompletedTutorshipsAdapter(Context context) {
         this.context = context;
-        this.reserves = new ArrayList<>();
+        this.tutorships = new ArrayList<>();
     }
 
-    public void addReserves(List<Reserve> reserves) {
-        this.reserves.addAll(reserves);
+    public void addTutorships(List<Tutorship> tutorships) {
+        this.tutorships.addAll(tutorships);
 
         notifyDataSetChanged();
     }
 
-    public void addReserve(Reserve reserve) {
-        reserves.add(reserve);
+    public void addTutorship(Tutorship tutorship) {
+        tutorships.add(tutorship);
         notifyDataSetChanged();
     }
 
-    public boolean removeReserve(int reserveID) {
+    public boolean removeTutorship(int tutorshipID) {
         boolean remove = false;
-        Reserve reserve;
-        Iterator<Reserve> reserveIterator = reserves.iterator();
+        Tutorship tutorship;
+        Iterator<Tutorship> tutorshipIterator = tutorships.iterator();
 
         do {
-            reserve = reserveIterator.next();
-            if(reserve.getReserveid() == reserveID) {
+            tutorship = tutorshipIterator.next();
+            if(tutorship.getTutorshipid() == tutorshipID) {
                 remove = true;
             }
-        } while (reserveIterator.hasNext() && !remove);
+        } while (tutorshipIterator.hasNext() && !remove);
 
         if(remove) {
-            reserves.remove(reserve);
+            tutorships.remove(tutorship);
             notifyDataSetChanged();
         }
 
         return remove;
     }
 
-    public void clearReserves() {
-        reserves.clear();
+    public void clearTutorships() {
+        tutorships.clear();
         notifyDataSetInvalidated();
     }
 
     @Override
     public int getCount() {
-        return reserves.size();
+        return tutorships.size();
     }
 
     @Override
-    public Reserve getItem(int position) {
-        return reserves.get(position);
+    public Tutorship getItem(int position) {
+        return tutorships.get(position);
     }
 
     @Override
@@ -79,21 +80,21 @@ public class ReservesAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if(convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.list_item_reserve, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.list_item_completed_tutorship, parent, false);
         }
 
-        ((TextView) convertView.findViewById(R.id.reserve_fullname)).setText(reserves.get(position).getUserFullname());
-        ((TextView) convertView.findViewById(R.id.reserve_course_name)).setText(reserves.get(position).getCourseName());
-        ((TextView) convertView.findViewById(R.id.reserve_date)).setText(reserves.get(position).getDate() + " | " + reserves.get(position).getHour());
+        ((TextView) convertView.findViewById(R.id.completed_tutorship_fullname)).setText(tutorships.get(position).getUserFullname());
+        ((TextView) convertView.findViewById(R.id.completed_tutorship_course_name)).setText(tutorships.get(position).getCourseName());
+        ((TextView) convertView.findViewById(R.id.completed_tutorship_date)).setText(tutorships.get(position).getDate() + " | " + tutorships.get(position).getHour() + " (" + tutorships.get(position).getDuration() + " min.)");
 
 
         // More info layout
-        MaterialRippleLayout moreInfoButton = (MaterialRippleLayout) convertView.findViewById(R.id.reserve_moreInfoButton);
+        MaterialRippleLayout moreInfoButton = (MaterialRippleLayout) convertView.findViewById(R.id.completed_tutorship_moreInfoButton);
 
         // Company text + description
-        final View moreInfoLayout = convertView.findViewById(R.id.reserve_moreInfoLayout);
-        TextView description = (TextView) convertView.findViewById(R.id.reserve_motive);
-        String motiveText = "<b>Motivo: </b>" + reserves.get(position).getMotive();
+        final View moreInfoLayout = convertView.findViewById(R.id.completed_tutorship_moreInfoLayout);
+        TextView description = (TextView) convertView.findViewById(R.id.completed_tutorship_motive);
+        String motiveText = "<b>Motivo: </b>" + tutorships.get(position).getMotive();
         description.setText(Html.fromHtml(motiveText));
 
         // More info button
