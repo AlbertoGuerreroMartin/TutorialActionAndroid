@@ -8,27 +8,29 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
-import com.edu.tutorialaction.entity.Reserve;
+import com.edu.tutorialaction.entity.User;
 import com.edu.tutorialaction.network.AuthModel;
+import com.edu.tutorialaction.network.RxLoaderActivity;
 import com.edu.tutorialaction.network.RxLoaderFragment;
 
 import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import butterknife.InjectViews;
 import rx.Observer;
 
@@ -37,7 +39,7 @@ import rx.Observer;
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
-public class NavigationDrawerFragment extends RxLoaderFragment<Map<String, String>> implements View.OnClickListener {
+public class NavigationDrawerFragment extends Fragment implements View.OnClickListener {
 
     /**
      * A pointer to the current callbacks instance (the Activity).
@@ -51,8 +53,11 @@ public class NavigationDrawerFragment extends RxLoaderFragment<Map<String, Strin
     private DrawerLayout mDrawerLayout;
     private int currentSelectedSectionId;
 
-    @InjectViews({R.id.section_1, R.id.section_2, R.id.section_3, R.id.logout_section})
+    @InjectViews({R.id.reserves_drawer_section, R.id.completed_tutorships_drawer_section, R.id.logout_drawer_section})
     List<MaterialRippleLayout> drawerSections;
+
+    @InjectView(R.id.user_fullname_drawer_text_view) TextView userFullnameTextView;
+    @InjectView(R.id.username_drawer_text_view) TextView usernameTextView;
 
     private View mFragmentContainerView;
 
@@ -83,7 +88,7 @@ public class NavigationDrawerFragment extends RxLoaderFragment<Map<String, Strin
 
         // Select either the default item (0) or the last selected item.
         selectItem(0, new ReservesFragment());
-        currentSelectedSectionId = R.id.section1;
+        currentSelectedSectionId = R.id.reserves_text_view;
 
         return view;
     }
@@ -97,24 +102,26 @@ public class NavigationDrawerFragment extends RxLoaderFragment<Map<String, Strin
             currentSelectedSectionId = v.getId();
 
             switch (v.getId()) {
-                case R.id.section1:
-                    Toast.makeText(getActivity().getApplicationContext(), "Sección 1", Toast.LENGTH_SHORT).show();
+                case R.id.reserves_text_view:
+//                    Toast.makeText(getActivity().getApplicationContext(), "Sección 1", Toast.LENGTH_SHORT).show();
                     selectItem(drawerSections.indexOf((MaterialRippleLayout) v.getParent()), new ReservesFragment());
                     break;
 
-                case R.id.section2:
-                    Toast.makeText(getActivity().getApplicationContext(), "Sección 2", Toast.LENGTH_SHORT).show();
+                case R.id.completed_tutorships_text_view:
+//                    Toast.makeText(getActivity().getApplicationContext(), "Sección 2", Toast.LENGTH_SHORT).show();
 //                selectItem(drawerSections.indexOf((MaterialRippleLayout) v.getParent()));
                     break;
 
-                case R.id.section3:
-                    Toast.makeText(getActivity().getApplicationContext(), "Sección 3", Toast.LENGTH_SHORT).show();
-//                selectItem(drawerSections.indexOf((MaterialRippleLayout) v.getParent()));
-                    break;
-
-                case R.id.logout_section_textview:
+                case R.id.logout_text_view:
                     System.out.println("ATTEMPT TO LOGOUT");
-                    addSubscription(AuthModel.INSTANCE.logout(new Observer<Map<String, String>>() {
+
+                    RxLoaderActivity<Map<String, String>> loader = new RxLoaderActivity<Map<String, String>>() {
+                        @Override
+                        public void onNext(Map<String, String> response) {
+                        }
+                    };
+
+                    loader.addSubscription(AuthModel.INSTANCE.logout(new Observer<Map<String, String>>() {
                         @Override
                         public void onCompleted() {
                             System.out.println("LOGOUT COMPLETED");
@@ -164,17 +171,17 @@ public class NavigationDrawerFragment extends RxLoaderFragment<Map<String, Strin
         }
     }
 
-    public boolean isDrawerOpen() {
-        return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
-    }
-
     /**
      * Users of this fragment must call this method to set up the navigation drawer interactions.
      *
      * @param fragmentId   The android:id of this fragment in its activity's layout.
      * @param drawerLayout The DrawerLayout containing this fragment's UI.
      */
-    public void setUp(int fragmentId, DrawerLayout drawerLayout) {
+    public void setUp(int fragmentId, DrawerLayout drawerLayout, User userInfo) {
+
+        userFullnameTextView.setText(userInfo.getFullname());
+        usernameTextView.setText(userInfo.getUsername());
+
         mFragmentContainerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
 
@@ -252,17 +259,6 @@ public class NavigationDrawerFragment extends RxLoaderFragment<Map<String, Strin
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // If the drawer is open, show the global app actions in the action bar. See also
-        // showGlobalContextActionBar, which controls the top-left area of the action bar.
-        if (mDrawerLayout != null && isDrawerOpen()) {
-            inflater.inflate(R.menu.global, menu);
-            showGlobalContextActionBar();
-        }
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
@@ -277,29 +273,9 @@ public class NavigationDrawerFragment extends RxLoaderFragment<Map<String, Strin
     }
 
     /**
-     * Per the navigation drawer design guidelines, updates the action bar to show the global app
-     * 'context', rather than just what's in the current screen.
-     */
-    private void showGlobalContextActionBar() {
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setTitle(R.string.app_name);
-    }
-
-    private ActionBar getActionBar() {
-        return ((MainActivity) getActivity()).getSupportActionBar();
-    }
-
-    @Override
-    public void onNext(Map<String, String> stringStringMap) {
-
-    }
-
-    /**
      * Callbacks interface that all activities using this fragment must implement.
      */
-    public static interface NavigationDrawerCallbacks {
+    public interface NavigationDrawerCallbacks {
         /**
          * Called when an item in the navigation drawer is selected.
          */

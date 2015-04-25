@@ -21,4 +21,7 @@
     <string name="date">Fecha:</string>
     <string name="hour">Hora:</string>
     <string name="reserve">Reservar</string>
+    <string name="reserves_section_title">Reservas</string>
+    <string name="logout_section_title">Cerrar sesión</string>
+    <string name="completed_tutorships_section_title">Tutorías completadas</string>
 </resources>

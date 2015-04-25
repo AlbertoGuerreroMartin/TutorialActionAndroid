@@ -15,10 +15,37 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:adjustViewBounds="true"
             android:src="@drawable/drawer_image"
             android:layout_gravity="center_horizontal"
-            android:contentDescription="test" />
+            android:contentDescription="TALogo" />
+
+        <TextView
+            android:id="@+id/user_fullname_drawer_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textStyle="bold"
+            android:text="Nombre"/>
+
+        <TextView
+            android:id="@+id/username_drawer_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textSize="12sp"
+            android:text="Usuario"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/holo_blue_dark"/>
 
         <ScrollView
             android:id="@+id/scroller"
@@ -32,69 +59,53 @@
                 android:orientation="vertical">
 
                 <com.balysv.materialripple.MaterialRippleLayout
-                    android:id="@+id/section_1"
+                    android:id="@+id/reserves_drawer_section"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/Ripple" >
 
                     <TextView
-                        android:id="@+id/section1"
+                        android:id="@+id/reserves_text_view"
                         android:layout_width="240dp"
                         android:layout_height="50dp"
                         android:gravity="center_vertical"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
-                        android:text="@string/title_section1"/>
+                        android:text="@string/reserves_section_title"/>
 
                 </com.balysv.materialripple.MaterialRippleLayout>
 
 
                 <com.balysv.materialripple.MaterialRippleLayout
-                    android:id="@+id/section_2"
+                    android:id="@+id/completed_tutorships_drawer_section"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/Ripple" >
 
                     <TextView
-                        android:id="@+id/section2"
+                        android:id="@+id/completed_tutorships_text_view"
                         android:layout_width="240dp"
                         android:layout_height="50dp"
                         android:gravity="center_vertical"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
-                        android:text="@string/title_section2"/>
+                        android:text="@string/completed_tutorships_section_title"/>
                 </com.balysv.materialripple.MaterialRippleLayout>
 
                 <com.balysv.materialripple.MaterialRippleLayout
-                    android:id="@+id/section_3"
+                    android:id="@+id/logout_drawer_section"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/Ripple" >
 
                     <TextView
-                        android:id="@+id/section3"
+                        android:id="@+id/logout_text_view"
                         android:layout_width="240dp"
                         android:layout_height="50dp"
                         android:gravity="center_vertical"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
-                        android:text="@string/title_section3"/>
-                </com.balysv.materialripple.MaterialRippleLayout>
-
-                <com.balysv.materialripple.MaterialRippleLayout
-                    android:id="@+id/logout_section"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/Ripple" >
-
-                    <TextView
-                        android:id="@+id/logout_section_textview"
-                        android:layout_width="240dp"
-                        android:layout_height="50dp"
-                        android:gravity="center_vertical"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:text="Cerrar sesión"/>
+                        android:text="@string/logout_section_title"/>
                 </com.balysv.materialripple.MaterialRippleLayout>
 
             </LinearLayout>

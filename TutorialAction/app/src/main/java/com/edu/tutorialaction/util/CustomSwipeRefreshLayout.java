@@ -3,7 +3,6 @@ package com.edu.tutorialaction.util;
 import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
-import android.view.ViewGroup;
 import android.widget.ListView;
 
 public class CustomSwipeRefreshLayout extends SwipeRefreshLayout {

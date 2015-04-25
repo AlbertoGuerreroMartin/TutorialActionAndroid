@@ -28,10 +28,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private User userInfo;
 
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
-    private CharSequence mTitle;
 
     public User getUserInfo() {
         return userInfo;
@@ -43,7 +39,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         setContentView(R.layout.activity_main);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
 
         loadUserInfo();
 
@@ -77,17 +72,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
                 userInfo = user;
 
                 // Set up the drawer.
-                mNavigationDrawerFragment.setUp(
-                        R.id.navigation_drawer,
-                        (DrawerLayout) findViewById(R.id.drawer_layout));
+                mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), userInfo);
 
             }
         }, getApplicationContext()));
     }
-
-//    @Override
-//    public void onBackPressed() {
-//    }
 
     @Override
     public void onNavigationDrawerItemSelected(int position, RxLoaderFragment<Object> fragment) {
@@ -96,12 +85,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         fragmentManager.beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();
-    }
-
-    public void restoreActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
     }
 
 
