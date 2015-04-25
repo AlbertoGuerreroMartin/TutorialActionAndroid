@@ -86,7 +86,8 @@ public class CompletedTutorshipsAdapter extends BaseAdapter {
         ((TextView) convertView.findViewById(R.id.completed_tutorship_fullname)).setText(tutorships.get(position).getUserFullname());
         ((TextView) convertView.findViewById(R.id.completed_tutorship_course_name)).setText(tutorships.get(position).getCourseName());
         ((TextView) convertView.findViewById(R.id.completed_tutorship_email)).setText(tutorships.get(position).getEmail());
-        ((TextView) convertView.findViewById(R.id.completed_tutorship_date)).setText(tutorships.get(position).getDate() + " | " + tutorships.get(position).getHour() + " (" + tutorships.get(position).getDuration() + " min.)");
+        ((TextView) convertView.findViewById(R.id.completed_tutorship_date)).setText(tutorships.get(position).getDate() + " | " + tutorships.get(position).getHour());
+        ((TextView) convertView.findViewById(R.id.completed_tutorship_duration)).setText(tutorships.get(position).getDuration() + " minutos");
 
 
         // More info layout

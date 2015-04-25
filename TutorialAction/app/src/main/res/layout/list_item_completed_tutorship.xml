@@ -72,12 +72,26 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/completed_tutorship_date"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:hint="30/04/14 | 10:00" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/completed_tutorship_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:hint="30/04/14 | 10:00" />
+
+                    <TextView
+                        android:id="@+id/completed_tutorship_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:hint="11 minutos" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
