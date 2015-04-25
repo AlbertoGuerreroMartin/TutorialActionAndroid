@@ -8,9 +8,6 @@ import android.widget.ListView;
 
 public class CustomSwipeRefreshLayout extends SwipeRefreshLayout {
 
-    /**
-     * A StickyListHeadersListView whose parent view is this SwipeRefreshLayout
-     */
     private ListView list;
 
     public CustomSwipeRefreshLayout(Context context) {
