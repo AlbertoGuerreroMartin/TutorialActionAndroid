@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.edu.tutorialaction.entity.User;
 import com.edu.tutorialaction.network.AuthModel;
+import com.edu.tutorialaction.network.NetworkManager;
 import com.edu.tutorialaction.network.RxLoaderActivity;
 import com.edu.tutorialaction.network.RxLoaderFragment;
 
@@ -32,6 +33,7 @@ import java.util.Map;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.InjectViews;
+import retrofit.RetrofitError;
 import rx.Observer;
 
 /**
@@ -130,6 +132,12 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
                         @Override
                         public void onError(Throwable e) {
                             System.out.println("LOGOUT ERROR");
+
+                            // If user unauthorized, show login
+                            int errorCode = ((RetrofitError) e).getResponse().getStatus();
+                            if(errorCode == 401) {
+                                NetworkManager.sessionExpiration(getActivity(), NavigationDrawerFragment.this);
+                            }
                         }
 
                         @Override

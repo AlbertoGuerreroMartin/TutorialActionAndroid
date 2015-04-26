@@ -14,6 +14,7 @@ import com.edu.tutorialaction.entity.Course;
 import com.edu.tutorialaction.entity.TutorshipDay;
 import com.edu.tutorialaction.entity.TutorshipType;
 import com.edu.tutorialaction.entity.User;
+import com.edu.tutorialaction.network.NetworkManager;
 import com.edu.tutorialaction.network.NewReserveModel;
 import com.edu.tutorialaction.network.RxLoaderActivity;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -33,6 +34,7 @@ import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import retrofit.RetrofitError;
 import rx.Observer;
 
 /**
@@ -122,11 +124,18 @@ public class NewReserveActivity extends ActionBarActivity {
                         System.out.println("ERROR AL RESERVAR TUTORIA");
                         System.out.println(e.getLocalizedMessage());
                         e.printStackTrace();
+
+                        // If user unauthorized, show login
+                        int errorCode = ((RetrofitError) e).getResponse().getStatus();
+                        if(errorCode == 401) {
+                            NetworkManager.sessionExpiration(NewReserveActivity.this, null);
+                        }
                     }
 
                     @Override
                     public void onNext(Object o) {
                         System.out.println("TUTORIA RESERVADA");
+                        NewReserveActivity.this.finish();
                     }
                 }, getApplicationContext(), selectedTeacherID, selectedCourseID, selectedTypeID, reasonEditText.getText().toString(), selectedDate, selectedHour));
             }
@@ -233,6 +242,12 @@ public class NewReserveActivity extends ActionBarActivity {
             public void onError(Throwable e) {
                 e.printStackTrace();
                 emptyView.errorLoading();
+
+                // If user unauthorized, show login
+                int errorCode = ((RetrofitError) e).getResponse().getStatus();
+                if(errorCode == 401) {
+                    NetworkManager.sessionExpiration(NewReserveActivity.this, null);
+                }
             }
 
             @Override

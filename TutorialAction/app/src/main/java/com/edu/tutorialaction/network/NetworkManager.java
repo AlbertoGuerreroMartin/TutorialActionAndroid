@@ -1,5 +1,13 @@
 package com.edu.tutorialaction.network;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.widget.Toast;
+
+import com.edu.tutorialaction.LoginActivity;
 import com.edu.tutorialaction.entity.Reserve;
 import com.edu.tutorialaction.entity.Tutorship;
 import com.edu.tutorialaction.entity.TutorshipDay;
@@ -10,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
 import retrofit.client.OkClient;
 import retrofit.http.DELETE;
 import retrofit.http.Field;
@@ -31,6 +40,24 @@ public enum NetworkManager {
                 .setClient(new OkClient())
                 .build()
                 .create(RestClient.class);
+    }
+
+    public static void sessionExpiration(Activity activity, Fragment fragment) {
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
+        sharedPreferences.edit().remove("api_key").apply();
+
+        Toast.makeText(activity.getApplicationContext(), "La sesión ha expirado. Inicie sesión de nuevo.", Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent(activity, LoginActivity.class);
+
+        if(fragment != null) {
+            fragment.startActivity(intent);
+        } else {
+            activity.startActivity(intent);
+        }
+
+        activity.finish();
     }
 
     public RestClient getClient() {

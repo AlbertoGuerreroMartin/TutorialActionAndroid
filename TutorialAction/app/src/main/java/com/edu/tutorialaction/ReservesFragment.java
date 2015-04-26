@@ -1,14 +1,19 @@
 package com.edu.tutorialaction;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import com.edu.tutorialaction.entity.Course;
 import com.edu.tutorialaction.entity.Reserve;
+import com.edu.tutorialaction.network.NetworkManager;
 import com.edu.tutorialaction.network.ReserveModel;
 import com.edu.tutorialaction.network.RxLoaderFragment;
 import com.edu.tutorialaction.util.CustomSwipeRefreshLayout;
@@ -17,6 +22,7 @@ import com.welbits.izanrodrigo.emptyview.library.EmptyView;
 import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import retrofit.RetrofitError;
 
 public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -80,6 +86,12 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
         super.onError(e);
         this.emptyView.errorLoading();
         this.swipeRefreshLayout.setRefreshing(false);
+
+        // If user unauthorized, show login
+        int errorCode = ((RetrofitError) e).getResponse().getStatus();
+        if(errorCode == 401) {
+            NetworkManager.sessionExpiration(getActivity(), this);
+        }
     }
 
     @Override
