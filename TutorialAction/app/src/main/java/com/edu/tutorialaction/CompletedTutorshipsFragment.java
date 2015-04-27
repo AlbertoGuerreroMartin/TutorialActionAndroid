@@ -107,7 +107,7 @@ public class CompletedTutorshipsFragment extends RxLoaderFragment<Object> implem
                 DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
                 int comparison = 0;
                 try {
-                    comparison = format.parse(rhs.getDate()).compareTo(format.parse(lhs.getDate()));
+                    comparison = format.parse(lhs.getDate()).compareTo(format.parse(rhs.getDate()));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

@@ -1,9 +1,7 @@
 package com.edu.tutorialaction;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +21,6 @@ import com.welbits.izanrodrigo.emptyview.library.EmptyView;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -41,6 +38,8 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
     @InjectView(R.id.reserves_fab) FloatingActionButton floatingActionButton;
     private ReservesAdapter reservesAdapter;
 
+    private int numberOfReserves;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reserves, container, false);
@@ -53,6 +52,8 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        this.numberOfReserves = -1;
 
         //--- Set refresh ---
         this.swipeRefreshLayout.setList(reservesList);
@@ -114,7 +115,7 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
                 DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
                 int comparison = 0;
                 try {
-                    comparison = format.parse(rhs.getDate()).compareTo(format.parse(lhs.getDate()));
+                    comparison = format.parse(lhs.getDate()).compareTo(format.parse(rhs.getDate()));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -128,6 +129,17 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
         if(this.reservesAdapter.isEmpty()) {
             this.emptyView.displayEmpty();
         } else {
+            if(this.numberOfReserves != -1) {
+                int numberOfNewReserves = ((List<Reserve>) reserves).size() - this.numberOfReserves;
+                String toastText = numberOfNewReserves == 1 ? "Hay 1 nueva reserva." : "Hay " + numberOfNewReserves + " nuevas reservas.";
+                if(numberOfNewReserves != 0) {
+                    Toast.makeText(getActivity().getApplicationContext(), toastText, Toast.LENGTH_SHORT).show();
+                    this.numberOfReserves += numberOfNewReserves;
+                }
+            } else {
+                this.numberOfReserves = ((List<Reserve>) reserves).size();
+            }
+
             this.emptyView.successLoading();
         }
     }
