@@ -133,25 +133,23 @@ public class NavigationDrawerFragment extends Fragment implements View.OnClickLi
                         public void onError(Throwable e) {
                             System.out.println("LOGOUT ERROR");
 
-                            // If user unauthorized, show login
-                            int errorCode = ((RetrofitError) e).getResponse().getStatus();
-                            if(errorCode == 401) {
-                                NetworkManager.sessionExpiration(getActivity(), NavigationDrawerFragment.this);
-                            }
+                            getActivity().finish();
                         }
 
                         @Override
                         public void onNext(Map<String, String> stringStringMap) {
                             System.out.println("LOGOUT NEXT");
                             System.out.println("Logout status: " + stringStringMap.get("status"));
-                            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-                            sharedPreferences.edit().remove("api_key").apply();
 
-                            Intent intent = new Intent(getActivity(), LoginActivity.class);
-                            startActivity(intent);
                             getActivity().finish();
                         }
                     }, getActivity().getApplicationContext()));
+
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+                    sharedPreferences.edit().remove("api_key").apply();
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(intent);
+
                     break;
             }
         }
