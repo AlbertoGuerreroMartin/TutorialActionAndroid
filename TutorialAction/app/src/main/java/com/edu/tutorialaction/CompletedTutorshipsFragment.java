@@ -8,13 +8,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import com.edu.tutorialaction.entity.Course;
+import com.edu.tutorialaction.entity.Reserve;
 import com.edu.tutorialaction.entity.Tutorship;
 import com.edu.tutorialaction.network.CompletedTutorshipModel;
 import com.edu.tutorialaction.network.RxLoaderFragment;
 import com.edu.tutorialaction.util.CustomSwipeRefreshLayout;
 import com.melnykov.fab.FloatingActionButton;
 import com.welbits.izanrodrigo.emptyview.library.EmptyView;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -91,6 +100,22 @@ public class CompletedTutorshipsFragment extends RxLoaderFragment<Object> implem
     public void onNext(Object completedTutorships) {
         this.swipeRefreshLayout.setRefreshing(false);
         this.completedTutorshipsAdapter.clearTutorships();
+
+        Collections.sort((List<Tutorship>) completedTutorships, new Comparator<Tutorship>() {
+            @Override
+            public int compare(Tutorship lhs, Tutorship rhs) {
+                DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+                int comparison = 0;
+                try {
+                    comparison = format.parse(rhs.getDate()).compareTo(format.parse(lhs.getDate()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                return comparison;
+            }
+        });
+
         this.completedTutorshipsAdapter.addTutorships((List<Tutorship>) completedTutorships);
 
         if(this.completedTutorshipsAdapter.isEmpty()) {

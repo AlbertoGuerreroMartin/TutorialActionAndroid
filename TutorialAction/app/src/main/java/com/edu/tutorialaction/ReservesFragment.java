@@ -19,7 +19,16 @@ import com.edu.tutorialaction.network.RxLoaderFragment;
 import com.edu.tutorialaction.util.CustomSwipeRefreshLayout;
 import com.melnykov.fab.FloatingActionButton;
 import com.welbits.izanrodrigo.emptyview.library.EmptyView;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import retrofit.RetrofitError;
@@ -98,6 +107,22 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
     public void onNext(Object reserves) {
         this.swipeRefreshLayout.setRefreshing(false);
         this.reservesAdapter.clearReserves();
+
+        Collections.sort((List<Reserve>) reserves, new Comparator<Reserve>() {
+            @Override
+            public int compare(Reserve lhs, Reserve rhs) {
+                DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+                int comparison = 0;
+                try {
+                    comparison = format.parse(rhs.getDate()).compareTo(format.parse(lhs.getDate()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                return comparison;
+            }
+        });
+
         this.reservesAdapter.addReserves((List<Reserve>) reserves);
 
         if(this.reservesAdapter.isEmpty()) {
