@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <item
+        android:id="@+id/order_by_date"
+        android:title="@string/order_by_date"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/reserve_order"
+        android:title="@string/reserve_order"
+        app:showAsAction="never" />
+
+</menu>

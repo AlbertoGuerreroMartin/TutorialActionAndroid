@@ -24,4 +24,6 @@
     <string name="reserves_section_title">Reservas</string>
     <string name="logout_section_title">Cerrar sesión</string>
     <string name="completed_tutorships_section_title">Tutorías completadas</string>
+    <string name="order_by_date">Orden por fecha</string>
+    <string name="reserve_order">Orden de reserva</string>
 </resources>

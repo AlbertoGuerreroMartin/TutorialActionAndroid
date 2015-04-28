@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -39,12 +42,14 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
     private ReservesAdapter reservesAdapter;
 
     private int numberOfReserves;
+    private int sortOption;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reserves, container, false);
 
         ButterKnife.inject(this, view);
+        setHasOptionsMenu(true);
 
         return view;
     }
@@ -54,6 +59,7 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
         super.onActivityCreated(savedInstanceState);
 
         this.numberOfReserves = -1;
+        this.sortOption = R.id.order_by_date;
 
         //--- Set refresh ---
         this.swipeRefreshLayout.setList(reservesList);
@@ -74,7 +80,7 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), NewReserveActivity.class);
                 intent.putExtra("courses", Course.LIST_SERIALIZER.toJson(((MainActivity) getActivity()).getUserInfo().getCourses()));
-                startActivity(intent);
+                startActivityForResult(intent, 0);
             }
         });
 
@@ -91,6 +97,35 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
         addSubscription(ReserveModel.INSTANCE.getReserves(ReservesFragment.this, getActivity().getApplicationContext()));
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("Nueva tutoria reservada");
+        load();
+    }
+
+
+    //--- Menu ---
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.reserves, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() != this.sortOption) {
+            this.sortOption = item.getItemId();
+            load();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    //------------
+
     @Override
     public void onError(Throwable e) {
         super.onError(e);
@@ -104,12 +139,18 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
         }
     }
 
-    @Override
-    public void onNext(Object reserves) {
-        this.swipeRefreshLayout.setRefreshing(false);
-        this.reservesAdapter.clearReserves();
 
-        Collections.sort((List<Reserve>) reserves, new Comparator<Reserve>() {
+    private void sortByReserveOrder(List<Reserve> reserves) {
+        Collections.sort(reserves, new Comparator<Reserve>() {
+            @Override
+            public int compare(Reserve lhs, Reserve rhs) {
+                return Integer.valueOf(rhs.getReserveid()).compareTo(lhs.getReserveid());
+            }
+        });
+    }
+
+    private void sortByDate(List<Reserve> reserves) {
+        Collections.sort(reserves, new Comparator<Reserve>() {
             @Override
             public int compare(Reserve lhs, Reserve rhs) {
                 DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
@@ -123,6 +164,18 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
                 return comparison;
             }
         });
+    }
+
+    @Override
+    public void onNext(Object reserves) {
+        this.swipeRefreshLayout.setRefreshing(false);
+        this.reservesAdapter.clearReserves();
+
+        if(this.sortOption == R.id.order_by_date) {
+            sortByDate((List<Reserve>) reserves);
+        } else {
+            sortByReserveOrder((List<Reserve>) reserves);
+        }
 
         this.reservesAdapter.addReserves((List<Reserve>) reserves);
 

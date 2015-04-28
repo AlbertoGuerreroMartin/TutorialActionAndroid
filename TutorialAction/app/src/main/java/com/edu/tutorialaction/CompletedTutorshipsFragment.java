@@ -1,14 +1,11 @@
 package com.edu.tutorialaction;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import com.edu.tutorialaction.entity.Course;
-import com.edu.tutorialaction.entity.Reserve;
 import com.edu.tutorialaction.entity.Tutorship;
 import com.edu.tutorialaction.network.CompletedTutorshipModel;
 import com.edu.tutorialaction.network.RxLoaderFragment;
