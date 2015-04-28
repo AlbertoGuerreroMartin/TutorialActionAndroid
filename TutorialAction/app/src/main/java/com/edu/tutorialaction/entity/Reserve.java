@@ -14,6 +14,7 @@ public class Reserve {
     @Expose private String firstname;
     @Expose private String lastname;
     @Expose private String email;
+    @Expose private int tutorshipType;
     @Expose private String motive;
     @Expose private String date;
     @Expose private String hour;
@@ -24,18 +25,14 @@ public class Reserve {
         return reserveid;
     }
 
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
     public String getUserFullname() { return  firstname + " " + lastname; }
 
     public String getEmail() {
         return email;
+    }
+
+    public int getTutorshipType() {
+        return tutorshipType;
     }
 
     public String getMotive() {

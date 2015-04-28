@@ -93,8 +93,11 @@ public class ReservesAdapter extends BaseAdapter {
 
         // Company text + description
         final View moreInfoLayout = convertView.findViewById(R.id.reserve_moreInfoLayout);
+        TextView tutorshipType = (TextView) convertView.findViewById(R.id.tutorship_type);
         TextView description = (TextView) convertView.findViewById(R.id.reserve_motive);
+        String tutorshipTypeText = "<b>Tipo de tutoría: </b>" + (reserves.get(position).getTutorshipType() == 0 ? "Docente" : "Académica");
         String motiveText = "<b>Motivo: </b>" + reserves.get(position).getMotive();
+        tutorshipType.setText(Html.fromHtml(tutorshipTypeText));
         description.setText(Html.fromHtml(motiveText));
 
         // More info button
