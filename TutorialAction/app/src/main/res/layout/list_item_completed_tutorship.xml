@@ -9,120 +9,114 @@
     android:layout_height="match_parent"
     card_view:cardElevation="2dp" >
 
-    <com.balysv.materialripple.MaterialRippleLayout
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        style="@style/CellRipple" >
+        android:layout_height="wrap_content" >
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:gravity="center_vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/completed_tutorship_course_name"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/completed_tutorship_course_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_weight="4"
-                    android:hint="Administración de Bases de Datos"
-                    android:textAppearance="@android:style/TextAppearance.Medium"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:gravity="center_vertical">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/completed_tutorship_fullname"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Nombre del usuario" />
-
-                    <TextView
-                        android:id="@+id/completed_tutorship_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:autoLink="email"
-                        android:hint="Email del usuario" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/completed_tutorship_date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:hint="30/04/14 | 10:00" />
-
-                    <TextView
-                        android:id="@+id/completed_tutorship_duration"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:hint="11 minutos" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-
-            <FrameLayout
-                android:id="@+id/completed_tutorship_moreInfoLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/completed_tutorship_motive"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:paddingBottom="10dp" />
-
-            </FrameLayout>
-
-            <include
-                layout="@layout/card_divider"
-                android:id="@+id/completed_tutorship_moreInfoDivider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"/>
-
-            <include
-                android:id="@+id/completed_tutorship_moreInfoButton"
-                layout="@layout/card_clickable_text"/>
+                android:textStyle="bold"
+                android:layout_weight="4"
+                android:hint="Administración de Bases de Datos"
+                android:textAppearance="@android:style/TextAppearance.Medium"/>
 
         </LinearLayout>
-    </com.balysv.materialripple.MaterialRippleLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/completed_tutorship_fullname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre del usuario" />
+
+                <TextView
+                    android:id="@+id/completed_tutorship_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:autoLink="email"
+                    android:hint="Email del usuario" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/completed_tutorship_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:hint="30/04/14 | 10:00" />
+
+                <TextView
+                    android:id="@+id/completed_tutorship_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:hint="11 minutos" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <FrameLayout
+            android:id="@+id/completed_tutorship_moreInfoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/completed_tutorship_motive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="10dp" />
+
+        </FrameLayout>
+
+        <include
+            layout="@layout/card_divider"
+            android:id="@+id/completed_tutorship_moreInfoDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <include
+            android:id="@+id/completed_tutorship_moreInfoButton"
+            layout="@layout/card_clickable_text"/>
+
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>
