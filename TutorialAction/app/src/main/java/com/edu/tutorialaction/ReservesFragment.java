@@ -1,7 +1,9 @@
 package com.edu.tutorialaction;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,6 +37,8 @@ import retrofit.RetrofitError;
 
 public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeRefreshLayout.OnRefreshListener {
 
+    private static final String ROLE_SHARED_PREFERENCES_KEY= "role";
+
     @InjectView(R.id.reserves_swipe_container) CustomSwipeRefreshLayout swipeRefreshLayout;
     @InjectView(R.id.reservesList) ListView reservesList;
     @InjectView(R.id.reserves_emptyView) EmptyView emptyView;
@@ -42,6 +46,7 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
     private ReservesAdapter reservesAdapter;
 
     private int numberOfReserves;
+    private boolean reservesAdded;
     private int sortOption;
 
     @Override
@@ -58,7 +63,8 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        this.numberOfReserves = -1;
+        this.numberOfReserves = 0;
+        this.reservesAdded = false;
         this.sortOption = R.id.order_by_date;
 
         //--- Set refresh ---
@@ -74,15 +80,22 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
         //------------------------
 
 
-        this.floatingActionButton.attachToListView(this.reservesList);
-        this.floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), NewReserveActivity.class);
-                intent.putExtra("courses", Course.LIST_SERIALIZER.toJson(((MainActivity) getActivity()).getUserInfo().getCourses()));
-                startActivityForResult(intent, 0);
-            }
-        });
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        String role = sharedPreferences.getString(ROLE_SHARED_PREFERENCES_KEY, "");
+
+        if (role != null && role.compareTo("student") == 0) {
+            this.floatingActionButton.attachToListView(this.reservesList);
+            this.floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), NewReserveActivity.class);
+                    intent.putExtra("courses", Course.LIST_SERIALIZER.toJson(((MainActivity) getActivity()).getUserInfo().getCourses()));
+                    startActivityForResult(intent, 0);
+                }
+            });
+        } else {
+            this.floatingActionButton.setVisibility(View.GONE);
+        }
 
         this.emptyView.retry("Reintentar", new Runnable() {
             @Override
@@ -101,8 +114,13 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println("Nueva tutoria reservada");
-        load();
+        if(data != null) {
+            this.reservesAdded = data.getBooleanExtra("reserveAdded", false);
+            if (reservesAdded) {
+                System.out.println("Nueva tutoria reservada");
+                load();
+            }
+        }
     }
 
 
@@ -182,13 +200,12 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
         if(this.reservesAdapter.isEmpty()) {
             this.emptyView.displayEmpty();
         } else {
-            if(this.numberOfReserves != -1) {
+            if(this.reservesAdded) {
                 int numberOfNewReserves = ((List<Reserve>) reserves).size() - this.numberOfReserves;
                 String toastText = numberOfNewReserves == 1 ? "Hay 1 nueva reserva." : "Hay " + numberOfNewReserves + " nuevas reservas.";
-                if(numberOfNewReserves != 0) {
-                    Toast.makeText(getActivity().getApplicationContext(), toastText, Toast.LENGTH_SHORT).show();
-                    this.numberOfReserves += numberOfNewReserves;
-                }
+                Toast.makeText(getActivity().getApplicationContext(), toastText, Toast.LENGTH_SHORT).show();
+                this.numberOfReserves += numberOfNewReserves;
+                this.reservesAdded = false;
             } else {
                 this.numberOfReserves = ((List<Reserve>) reserves).size();
             }

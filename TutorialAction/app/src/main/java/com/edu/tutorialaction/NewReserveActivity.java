@@ -1,5 +1,6 @@
 package com.edu.tutorialaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
@@ -135,6 +136,9 @@ public class NewReserveActivity extends ActionBarActivity {
                     @Override
                     public void onNext(Object o) {
                         System.out.println("TUTORIA RESERVADA");
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra("reserveAdded", true);
+                        NewReserveActivity.this.setResult(RESULT_OK, resultIntent);
                         NewReserveActivity.this.finish();
                     }
                 }, getApplicationContext(), selectedTeacherID, selectedCourseID, selectedTypeID, reasonEditText.getText().toString(), selectedDate, selectedHour));

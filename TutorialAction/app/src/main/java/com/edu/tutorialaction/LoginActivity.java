@@ -12,7 +12,6 @@ import android.widget.ProgressBar;
 
 import com.edu.tutorialaction.network.AuthModel;
 import com.edu.tutorialaction.network.RxLoaderActivity;
-import com.welbits.izanrodrigo.emptyview.library.EmptyView;
 
 import java.util.Map;
 
@@ -23,6 +22,7 @@ import butterknife.InjectView;
 public class LoginActivity extends RxLoaderActivity<Map<String, String>> {
 
     private static final String API_KEY_SHARED_PREFERENCES_KEY= "api_key";
+    private static final String ROLE_SHARED_PREFERENCES_KEY= "role";
 
 
     @InjectView(R.id.login_username) EditText username;
@@ -84,6 +84,7 @@ public class LoginActivity extends RxLoaderActivity<Map<String, String>> {
         }
 
         sharedPreferences.edit().putString(API_KEY_SHARED_PREFERENCES_KEY, stringStringMap.get("api_key")).apply();
+        sharedPreferences.edit().putString(ROLE_SHARED_PREFERENCES_KEY, stringStringMap.get("role")).apply();
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

@@ -1,18 +1,27 @@
 package com.edu.tutorialaction;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.edu.tutorialaction.entity.Reserve;
+import com.edu.tutorialaction.network.ReserveModel;
+import com.edu.tutorialaction.network.RxLoaderActivity;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
+import rx.Observer;
 
 
 public class ReservesAdapter extends BaseAdapter {
@@ -104,7 +113,7 @@ public class ReservesAdapter extends BaseAdapter {
         // More info button
         final TextView moreInfoText = (TextView) convertView.findViewById(R.id.text);
         moreInfoText.setText("Más información");
-        moreInfoText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_arrow_expand , 0, 0, 0);
+        moreInfoText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_arrow_expand, 0, 0, 0);
 
         moreInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +128,60 @@ public class ReservesAdapter extends BaseAdapter {
                 moreInfoText.setText(wasExpanded ? "Más información" : "Menos información");
             }
         });
+
+
+
+        // More info button
+        ImageButton deleteButton = (ImageButton) convertView.findViewById(R.id.delete_button);
+        final Context context = convertView.getContext();
+        final int reserveID = reserves.get(position).getReserveid();
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+
+                                System.out.println("Removing reserve.");
+
+                                RxLoaderActivity<Object> loader = new RxLoaderActivity<Object>() {
+                                    @Override
+                                    public void onNext(Object response) {
+
+                                    }
+                                };
+
+                                loader.addSubscription(ReserveModel.INSTANCE.removeReserve(new Observer<Object>() {
+                                    @Override
+                                    public void onCompleted() {
+                                        System.out.println("Removing reserve COMPLETED.");
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        System.out.println("Removing reserve ERROR.");
+                                    }
+
+                                    @Override
+                                    public void onNext(Object o) {
+                                        System.out.println("Removing reserve NEXT.");
+                                        removeReserve(reserveID);
+                                    }
+                                }, context, reserveID));
+
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("¿Quieres cancelar la reserva?").setPositiveButton("Si", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
+            }
+        });
+
 
         return convertView;
     }
