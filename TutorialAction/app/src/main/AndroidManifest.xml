@@ -34,6 +34,10 @@
             android:name=".NewReserveActivity"
             android:label="@string/newReserve" >
         </activity>
+        <activity
+            android:name=".NewCompletedTutorship"
+            android:label="@string/newCompletedTutorship" >
+        </activity>
     </application>
 
 </manifest>

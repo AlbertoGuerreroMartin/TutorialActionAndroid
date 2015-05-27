@@ -16,7 +16,7 @@ import rx.subjects.AsyncSubject;
  * Created by albertoguerreromartin on 16/03/15.
  */
 public enum AuthModel {
-    INSTANCE;
+    INSTANCE, CompletedTutorshipModel;
 
     private static final String API_KEY_SHARED_PREFERENCES_KEY= "api_key";
 

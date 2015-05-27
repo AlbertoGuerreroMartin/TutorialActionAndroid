@@ -4,29 +4,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.welbits.izanrodrigo.emptyview.library.EmptyView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/reserves_emptyView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:emptyText="No hay reservas"
-        app:errorText="Error de red" >
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <ListView
-                android:id="@+id/reservesList"
+            <com.welbits.izanrodrigo.emptyview.library.EmptyView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/reserves_emptyView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="10dp"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="5dp" />
+                app:emptyText="No hay reservas"
+                app:errorText="Error de red" >
+
+                <ListView
+                    android:id="@+id/reservesList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="5dp" />
+
+            </com.welbits.izanrodrigo.emptyview.library.EmptyView>
 
 
             <com.melnykov.fab.FloatingActionButton
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/reserves_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,13 +41,6 @@
                 app:fab_colorPressed="#F50057"
                 app:fab_colorRipple="#FF80AB" />
 
-            <!--<Button-->
-                <!--android:id="@+id/logout_button"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Logout"/>-->
-
         </FrameLayout>
 
-    </com.welbits.izanrodrigo.emptyview.library.EmptyView>
 </com.edu.tutorialaction.util.CustomSwipeRefreshLayout>

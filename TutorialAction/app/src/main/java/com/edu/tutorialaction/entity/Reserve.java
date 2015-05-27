@@ -11,11 +11,12 @@ public class Reserve {
     public static final SimpleSerializer<Reserve> SERIALIZER = new SimpleSerializer<>(Reserve.class);
 
     @Expose private int reserveid;
+    @Expose private int courseid;
     @Expose private String firstname;
     @Expose private String lastname;
     @Expose private String email;
     @Expose private int tutorshipType;
-    @Expose private String motive;
+    @Expose private String reason;
     @Expose private String date;
     @Expose private String hour;
     @Expose private String courseName;
@@ -23,6 +24,10 @@ public class Reserve {
 
     public int getReserveid() {
         return reserveid;
+    }
+
+    public int getCourseid() {
+        return courseid;
     }
 
     public String getUserFullname() { return  firstname + " " + lastname; }
@@ -35,8 +40,8 @@ public class Reserve {
         return tutorshipType;
     }
 
-    public String getMotive() {
-        return motive;
+    public String getReason() {
+        return reason;
     }
 
     public String getDate() {

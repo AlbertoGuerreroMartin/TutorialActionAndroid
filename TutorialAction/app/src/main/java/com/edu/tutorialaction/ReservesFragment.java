@@ -144,19 +144,6 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
 
     //------------
 
-    @Override
-    public void onError(Throwable e) {
-        super.onError(e);
-        this.emptyView.errorLoading();
-        this.swipeRefreshLayout.setRefreshing(false);
-
-        // If user unauthorized, show login
-        int errorCode = ((RetrofitError) e).getResponse().getStatus();
-        if(errorCode == 401) {
-            NetworkManager.sessionExpiration(getActivity(), this);
-        }
-    }
-
 
     private void sortByReserveOrder(List<Reserve> reserves) {
         Collections.sort(reserves, new Comparator<Reserve>() {
@@ -215,7 +202,18 @@ public class ReservesFragment extends RxLoaderFragment<Object> implements SwipeR
     }
 
 
+    @Override
+    public void onError(Throwable e) {
+        super.onError(e);
+        this.emptyView.errorLoading();
+        this.swipeRefreshLayout.setRefreshing(false);
 
+        // If user unauthorized, show login
+        int errorCode = ((RetrofitError) e).getResponse().getStatus();
+        if(errorCode == 401) {
+            NetworkManager.sessionExpiration(getActivity(), this);
+        }
+    }
 
 
     //--- Swipe refresh callback ---

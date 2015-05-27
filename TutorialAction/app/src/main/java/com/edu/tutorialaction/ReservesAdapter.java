@@ -3,15 +3,18 @@ package com.edu.tutorialaction;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.edu.tutorialaction.entity.Course;
 import com.edu.tutorialaction.entity.Reserve;
 import com.edu.tutorialaction.network.ReserveModel;
 import com.edu.tutorialaction.network.RxLoaderActivity;
@@ -19,12 +22,13 @@ import com.edu.tutorialaction.network.RxLoaderActivity;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import rx.Observer;
 
 
 public class ReservesAdapter extends BaseAdapter {
+
+    private static final String ROLE_SHARED_PREFERENCES_KEY= "role";
 
     private final ArrayList<Reserve> reserves;
     private final Context context;
@@ -106,7 +110,7 @@ public class ReservesAdapter extends BaseAdapter {
         TextView tutorshipType = (TextView) convertView.findViewById(R.id.tutorship_type);
         TextView description = (TextView) convertView.findViewById(R.id.reserve_motive);
         String tutorshipTypeText = "<b>Tipo de tutoría: </b>" + (reserves.get(position).getTutorshipType() == 0 ? "Docente" : "Académica");
-        String motiveText = "<b>Motivo: </b>" + reserves.get(position).getMotive();
+        String motiveText = "<b>Motivo: </b>" + reserves.get(position).getReason();
         tutorshipType.setText(Html.fromHtml(tutorshipTypeText));
         description.setText(Html.fromHtml(motiveText));
 
@@ -131,7 +135,7 @@ public class ReservesAdapter extends BaseAdapter {
 
 
 
-        // More info button
+        // Delete button
         ImageButton deleteButton = (ImageButton) convertView.findViewById(R.id.delete_button);
         final Context context = convertView.getContext();
         final int reserveID = reserves.get(position).getReserveid();
@@ -181,6 +185,27 @@ public class ReservesAdapter extends BaseAdapter {
                         .setNegativeButton("No", dialogClickListener).show();
             }
         });
+
+
+
+        // Complete button
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        String role = sharedPreferences.getString(ROLE_SHARED_PREFERENCES_KEY, "");
+
+        ImageButton completeButton = (ImageButton) convertView.findViewById(R.id.complete_button);
+        if (role != null && role.compareTo("teacher") == 0) {
+            final Reserve reserveToComplete = reserves.get(position);
+            completeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, NewCompletedTutorship.class);
+                    intent.putExtra("reserveToComplete", Reserve.SERIALIZER.toJson(reserveToComplete));
+                    context.startActivity(intent);
+                }
+            });
+        } else {
+            completeButton.setVisibility(View.GONE);
+        }
 
 
         return convertView;

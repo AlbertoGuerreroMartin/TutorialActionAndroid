@@ -47,4 +47,33 @@ public enum CompletedTutorshipModel {
 
         return subscription;
     }
+
+
+    public Subscription createCompletedTutorship(Observer<Object> observer, Context context, int teacherID, int studentID, int courseID, int reserveID, int reserved, String date, String hour, String reason, int tutorshipType, int duration) {
+        // If there's a request in background, subscribe to it
+        if (request != null) {
+            return request.subscribe(observer);
+        }
+
+        // Otherwise start a new request
+        request = AsyncSubject.create();
+        Subscription subscription = request.subscribe(observer);
+
+        // Clear pending request on load finished
+        request.subscribe(new EndObserver<Object>() {
+            @Override
+            public void onEnd() {
+                request = null;
+            }
+        });
+
+        // Load reserves from network
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        NetworkManager.INSTANCE.getClient().createCompletedTutorship(sharedPreferences.getString(API_KEY_SHARED_PREFERENCES_KEY, ""), teacherID, studentID, courseID, reserveID, reserved, date, hour, reason, tutorshipType, duration)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(request);
+
+        return subscription;
+    }
 }

@@ -95,9 +95,13 @@ public class CompletedTutorshipsAdapter extends BaseAdapter {
 
         // Company text + description
         final View moreInfoLayout = convertView.findViewById(R.id.completed_tutorship_moreInfoLayout);
-        TextView description = (TextView) convertView.findViewById(R.id.completed_tutorship_motive);
+        TextView tutorshipType = (TextView) convertView.findViewById(R.id.tutorship_type);
+        String tutorshipTypeText = "<b>Tipo de tutoría: </b>" + (tutorships.get(position).getTutorshipType() == 0 ? "Docente" : "Académica");
+        tutorshipType.setText(Html.fromHtml(tutorshipTypeText));
+
+        TextView reason = (TextView) convertView.findViewById(R.id.completed_tutorship_motive);
         String motiveText = "<b>Motivo: </b>" + tutorships.get(position).getMotive();
-        description.setText(Html.fromHtml(motiveText));
+        reason.setText(Html.fromHtml(motiveText));
 
         // More info button
         final TextView moreInfoText = (TextView) convertView.findViewById(R.id.text);

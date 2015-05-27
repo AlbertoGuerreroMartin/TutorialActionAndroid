@@ -26,4 +26,8 @@
     <string name="completed_tutorships_section_title">Tutorías completadas</string>
     <string name="order_by_date">Orden por fecha</string>
     <string name="reserve_order">Orden de reserva</string>
+    <string name="newCompletedTutorship">Nueva tutoría completada</string>
+    <string name="student">Alumno:</string>
+    <string name="register">Registrar</string>
+    <string name="duration">Duración (en minutos):</string>
 </resources>

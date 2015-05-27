@@ -34,6 +34,14 @@
                 android:textAppearance="@android:style/TextAppearance.Medium"/>
 
             <ImageButton
+                android:id="@+id/complete_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_done"
+                android:background="@null"
+                android:tint="#8C8E91"/>
+
+            <ImageButton
                 android:id="@+id/delete_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

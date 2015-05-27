@@ -14,6 +14,7 @@ public class Tutorship {
     @Expose private String firstname;
     @Expose private String lastname;
     @Expose private String email;
+    @Expose private int tutorshipType;
     @Expose private String motive;
     @Expose private String date;
     @Expose private String hour;
@@ -38,6 +39,10 @@ public class Tutorship {
 
     public String getEmail() {
         return email;
+    }
+
+    public int getTutorshipType() {
+        return tutorshipType;
     }
 
     public String getMotive() {

@@ -14,6 +14,7 @@ import com.edu.tutorialaction.entity.Course;
 import com.edu.tutorialaction.entity.TutorshipDay;
 import com.edu.tutorialaction.entity.TutorshipType;
 import com.edu.tutorialaction.entity.User;
+import com.edu.tutorialaction.network.CompletedTutorshipModel;
 import com.edu.tutorialaction.network.NetworkManager;
 import com.edu.tutorialaction.network.NewReserveModel;
 import com.edu.tutorialaction.network.RxLoaderActivity;
@@ -38,59 +39,57 @@ import retrofit.RetrofitError;
 import rx.Observer;
 
 /**
- * Created by albertoguerreromartin on 13/04/15.
+ * Created by albertoguerreromartin on 24/05/15.
  */
-public class NewReserveActivity extends AppCompatActivity {
+public class NewCompletedTutorship extends AppCompatActivity {
 
     @InjectView(R.id.courses_spinner) Spinner coursesSpinner;
-    @InjectView(R.id.teachers_spinner) Spinner teachersSpinner;
+    @InjectView(R.id.students_spinner) Spinner studentsSpinner;
     @InjectView(R.id.reason_edit_text) EditText reasonEditText;
     @InjectView(R.id.type_spinner) Spinner typeSpinner;
     @InjectView(R.id.date_calendar_view) MaterialCalendarView dateCalendarView;
     @InjectView(R.id.hour_spinner) Spinner hourSpinner;
-    @InjectView(R.id.newReserve_button) Button sendButton;
+    @InjectView(R.id.duration_edit_text) EditText durationEditText;
+    @InjectView(R.id.newCompletedTutorship_button) Button registerButton;
 
-    @InjectView(R.id.newReserve_emptyView) EmptyView emptyView;
+    @InjectView(R.id.newCompletedTutorship_emptyView) EmptyView emptyView;
 
     private List<Course> courses;
-    private int selectedCoursePosition;
-    private int selectedTeacherPosition;
+    private int teacherID;
 
-    private int selectedTeacherID;
+    private int selectedCoursePosition;
+    private int selectedStudentPosition;
+
+    private int selectedStudentID;
     private int selectedCourseID;
     private int selectedTypeID;
     private String selectedDate;
     private String selectedHour;
 
 
-    /*
-    TODO
-    Para la memoria:
-        NO SE PUDO USAR TIMES SQUARE POR FALLO DEL OS: https://code.google.com/p/android/issues/detail?id=75940
-        Explicar en detalle el fork de la libreria del calendario
-     */
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_reserve);
+        setContentView(R.layout.activity_new_completed_tutorship);
         ButterKnife.inject(this);
 
         courses = Course.LIST_SERIALIZER.fromBundle(getIntent().getExtras(), "courses");
+        teacherID = getIntent().getExtras().getInt("teacherID");
 
         selectedCoursePosition = 0;
-        selectedTeacherPosition = 0;
+        selectedStudentPosition = 0;
         if(courses != null) {
-            selectedTeacherID = courses.get(0).getUsers().get(0).getUserID();
+            selectedStudentID = courses.get(0).getUsers().get(0).getUserID();
             selectedCourseID = courses.get(0).getCourseID();
         } else {
-            selectedTeacherID = 0;
+            selectedStudentID = 0;
             selectedCourseID = 0;
         }
         selectedTypeID = 0;
         selectedDate = "";
         selectedHour = "";
+
+        System.out.println("Current studentID: " + selectedStudentID);
 
         this.emptyView.retry("Reintentar", new Runnable() {
             @Override
@@ -99,7 +98,7 @@ public class NewReserveActivity extends AppCompatActivity {
             }
         });
 
-        sendButton.setOnClickListener(new View.OnClickListener() {
+        registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -110,9 +109,9 @@ public class NewReserveActivity extends AppCompatActivity {
                     }
                 };
 
-                System.out.println("\nteacherID: " + selectedTeacherID + "\ncourseID: " + selectedCourseID + "\ntypeID: " + selectedTypeID + "\nreason: " + reasonEditText.getText().toString() + "\ndate: " + selectedDate + "\nhour: " + selectedHour + "\n");
+                System.out.println("\nteacherID: " + teacherID + "\nstudentID: " + selectedStudentID + "\ncourseID: " + selectedCourseID + "\ntypeID: " + selectedTypeID + "\nreason: " + reasonEditText.getText().toString() + "\ndate: " + selectedDate + "\nhour: " + selectedHour + "\n");
 
-                loader.addSubscription(NewReserveModel.INSTANCE.createReserve(new Observer<Object>() {
+                loader.addSubscription(CompletedTutorshipModel.INSTANCE.createCompletedTutorship(new Observer<Object>() {
                     @Override
                     public void onCompleted() {
 
@@ -120,34 +119,35 @@ public class NewReserveActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        System.out.println("ERROR AL RESERVAR TUTORIA");
-                        System.out.println(e.getLocalizedMessage());
+                        System.out.println("ERROR AL REGISTRAR TUTORIA COMPLETA");
+                        System.out.println(e.getMessage());
                         e.printStackTrace();
 
                         // If user unauthorized, show login
                         int errorCode = ((RetrofitError) e).getResponse().getStatus();
-                        if(errorCode == 401) {
-                            NetworkManager.sessionExpiration(NewReserveActivity.this, null);
+                        if (errorCode == 401) {
+                            NetworkManager.sessionExpiration(NewCompletedTutorship.this, null);
                         }
                     }
 
                     @Override
                     public void onNext(Object o) {
-                        System.out.println("TUTORIA RESERVADA");
+                        System.out.println("TUTORIA COMPLETADA");
                         Intent resultIntent = new Intent();
-                        resultIntent.putExtra("reserveAdded", true);
-                        NewReserveActivity.this.setResult(RESULT_OK, resultIntent);
-                        NewReserveActivity.this.finish();
+                        resultIntent.putExtra("completedTutorshipRegistered", true);
+                        NewCompletedTutorship.this.setResult(RESULT_OK, resultIntent);
+                        NewCompletedTutorship.this.finish();
                     }
-                }, getApplicationContext(), selectedTeacherID, selectedCourseID, selectedTypeID, reasonEditText.getText().toString(), selectedDate, selectedHour));
+                }, getApplicationContext(), teacherID, selectedStudentID, selectedCourseID, -1, 0, selectedDate, selectedHour, reasonEditText.getText().toString(), selectedTypeID, Integer.parseInt(durationEditText.getText().toString())));
             }
         });
 
         configCourses();
 
         getSupportActionBar().setElevation(2);
-        getSupportActionBar().setTitle("Nueva reserva");
+        getSupportActionBar().setTitle("Añadir tutoría completada");
     }
+
 
     private void configCourses() {
 
@@ -164,7 +164,7 @@ public class NewReserveActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedCourseID = courses.get(position).getCourseID();
                 selectedCoursePosition = position;
-                configTeachers(position);
+                configStudents(position);
             }
 
             @Override
@@ -174,25 +174,24 @@ public class NewReserveActivity extends AppCompatActivity {
         });
     }
 
-    private void configTeachers(final int coursePosition) {
+    private void configStudents(final int coursePosition) {
 
-        List<User> teachers = courses.get(coursePosition).getUsers();
-        final ArrayList<String> teachersNames = new ArrayList<>(teachers.size());
-        for (User teacher : teachers) {
-            teachersNames.add(teacher.getFullname());
+        List<User> students = courses.get(coursePosition).getUsers();
+        final ArrayList<String> studentsNames = new ArrayList<>(students.size());
+        for (User student : students) {
+            studentsNames.add(student.getFullname());
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, teachersNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, studentsNames);
         adapter.setDropDownViewResource(R.layout.spinner_item_dropdown);
-        teachersSpinner.setAdapter(adapter);
-        teachersSpinner.setSelection(selectedTeacherPosition);
-        teachersSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        studentsSpinner.setAdapter(adapter);
+        studentsSpinner.setSelection(selectedStudentPosition);
+        studentsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                configType();
-                selectedTeacherPosition = position;
-                selectedTeacherID = courses.get(coursePosition).getUsers().get(position).getUserID();
-                configDate();
+                selectedStudentPosition = position;
+                selectedStudentID = courses.get(coursePosition).getUsers().get(position).getUserID();
+                System.out.println("New studentID: " + selectedStudentID);
             }
 
             @Override
@@ -200,6 +199,9 @@ public class NewReserveActivity extends AppCompatActivity {
 
             }
         });
+
+        configType();
+        configDate();
     }
 
     private void configType() {
@@ -248,7 +250,7 @@ public class NewReserveActivity extends AppCompatActivity {
                 // If user unauthorized, show login
                 int errorCode = ((RetrofitError) e).getResponse().getStatus();
                 if(errorCode == 401) {
-                    NetworkManager.sessionExpiration(NewReserveActivity.this, null);
+                    NetworkManager.sessionExpiration(NewCompletedTutorship.this, null);
                 }
             }
 
@@ -269,7 +271,6 @@ public class NewReserveActivity extends AppCompatActivity {
                 dateCalendarView.enableAllDays(false);
 
                 for (TutorshipDay day : days) {
-                    // TODO:
                     DateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
                     try {
                         Date date = format.parse(day.getDateString());
@@ -288,7 +289,7 @@ public class NewReserveActivity extends AppCompatActivity {
                     }
                 });
             }
-        }, getApplicationContext(), selectedTeacherID));
+        }, getApplicationContext(), teacherID));
     }
 
 

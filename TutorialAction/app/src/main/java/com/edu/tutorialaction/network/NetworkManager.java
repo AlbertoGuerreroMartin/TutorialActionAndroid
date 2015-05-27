@@ -94,5 +94,10 @@ public enum NetworkManager {
 
         @DELETE("/api/reserves/remove/{reserveID}")
         Observable<List<Reserve>> removeReserve(@Header("Api-Key") String apiKey, @Path("reserveID") int reserveID);
+
+
+        @FormUrlEncoded
+        @POST("/api/tutorships/create")
+        Observable<Map<String, String>> createCompletedTutorship(@Header("Api-Key") String apiKey, @Field("teacherID") int teacherID, @Field("studentID") int studentID, @Field("courseID") int courseID, @Field("reserveID") int reserveID, @Field("reserved") int reserved, @Field("date") String date, @Field("hour") String hour, @Field("reason") String reason, @Field("tutorshipType") int tutorshipType, @Field("duration") int duration);
     }
 }

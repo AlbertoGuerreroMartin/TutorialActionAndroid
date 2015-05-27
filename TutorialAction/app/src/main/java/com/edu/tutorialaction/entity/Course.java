@@ -15,12 +15,12 @@ public class Course {
 
     @Expose private int courseID;
     @Expose private String courseName;
-    @Expose private List<User> teachers;
+    @Expose private List<User> users;
 
     public Course(int courseID, String courseName, List<User> teachers) {
         this.courseID = courseID;
         this.courseName = courseName;
-        this.teachers = teachers;
+        this.users = teachers;
     }
 
     public int getCourseID() {
@@ -31,8 +31,8 @@ public class Course {
         return courseName;
     }
 
-    public List<User> getTeachers() {
-        return teachers;
+    public List<User> getUsers() {
+        return users;
     }
 
 }
