@@ -7,22 +7,30 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.Html;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.edu.tutorialaction.entity.Course;
 import com.edu.tutorialaction.entity.Reserve;
+import com.edu.tutorialaction.network.CompletedTutorshipModel;
+import com.edu.tutorialaction.network.NetworkManager;
 import com.edu.tutorialaction.network.ReserveModel;
 import com.edu.tutorialaction.network.RxLoaderActivity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import retrofit.RetrofitError;
 import rx.Observer;
 
 
@@ -90,7 +98,7 @@ public class ReservesAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         if(convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.list_item_reserve, parent, false);
@@ -192,15 +200,70 @@ public class ReservesAdapter extends BaseAdapter {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
         String role = sharedPreferences.getString(ROLE_SHARED_PREFERENCES_KEY, "");
 
-        ImageButton completeButton = (ImageButton) convertView.findViewById(R.id.complete_button);
+        final ImageButton completeButton = (ImageButton) convertView.findViewById(R.id.complete_button);
         if (role != null && role.compareTo("teacher") == 0) {
-            final Reserve reserveToComplete = reserves.get(position);
             completeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, NewCompletedTutorship.class);
-                    intent.putExtra("reserveToComplete", Reserve.SERIALIZER.toJson(reserveToComplete));
-                    context.startActivity(intent);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Completar reserva");
+
+                    final View dialogView = View.inflate(context, R.layout.complete_reserve_dialog, null);
+                    builder.setView(dialogView);
+
+
+                    // Set up the buttons
+                    builder.setPositiveButton("Completar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            int tutorshipDuration = Integer.parseInt(((EditText) dialogView.findViewById(R.id.duration_edit_text)).getText().toString());
+
+                            RxLoaderActivity<Map<String, String>> loader = new RxLoaderActivity<Map<String, String>>() {
+                                @Override
+                                public void onNext(Map<String, String> stringStringMap) {
+
+                                }
+                            };
+
+                            loader.addSubscription(ReserveModel.INSTANCE.completeReserve(new Observer<Object>() {
+                                @Override
+                                public void onCompleted() {
+
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    System.out.println("ERROR AL COMPLETAR RESERVA");
+                                    System.out.println(e.getMessage());
+                                    e.printStackTrace();
+
+                                    // If user unauthorized, show login
+                                    int errorCode = ((RetrofitError) e).getResponse().getStatus();
+                                    if (errorCode == 401) {
+                                        NetworkManager.sessionExpiration((MainActivity) context, null);
+                                    }
+                                }
+
+                                @Override
+                                public void onNext(Object o) {
+                                    System.out.println("RESERVA COMPLETADA");
+                                    Toast.makeText(context, ((Map<String, String>) o).get("message"), Toast.LENGTH_SHORT).show();
+                                    reserves.remove(reserves.get(position));
+                                    notifyDataSetChanged();
+                                }
+                            }, context, reserveID, tutorshipDuration));
+
+                        }
+                    });
+                    builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
+
                 }
             });
         } else {

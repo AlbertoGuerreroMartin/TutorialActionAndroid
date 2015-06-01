@@ -14,7 +14,7 @@
                 android:id="@+id/completed_tutorships_emptyView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:emptyText="No hay reservas"
+                app:emptyText="No hay tutorías completadas"
                 app:errorText="Error de red" >
 
                 <ListView
