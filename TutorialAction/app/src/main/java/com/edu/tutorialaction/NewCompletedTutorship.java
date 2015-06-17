@@ -18,6 +18,8 @@ import com.edu.tutorialaction.network.CompletedTutorshipModel;
 import com.edu.tutorialaction.network.NetworkManager;
 import com.edu.tutorialaction.network.NewReserveModel;
 import com.edu.tutorialaction.network.RxLoaderActivity;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateChangedListener;
@@ -51,7 +53,6 @@ public class NewCompletedTutorship extends AppCompatActivity {
     @InjectView(R.id.hour_spinner) Spinner hourSpinner;
     @InjectView(R.id.duration_edit_text) EditText durationEditText;
     @InjectView(R.id.newCompletedTutorship_button) Button registerButton;
-
     @InjectView(R.id.newCompletedTutorship_emptyView) EmptyView emptyView;
 
     private List<Course> courses;
@@ -65,7 +66,6 @@ public class NewCompletedTutorship extends AppCompatActivity {
     private int selectedTypeID;
     private String selectedDate;
     private String selectedHour;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

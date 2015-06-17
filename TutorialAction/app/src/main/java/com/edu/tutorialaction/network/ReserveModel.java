@@ -3,11 +3,6 @@ package com.edu.tutorialaction.network;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
-import com.edu.tutorialaction.entity.Reserve;
-
-import java.util.List;
-
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;

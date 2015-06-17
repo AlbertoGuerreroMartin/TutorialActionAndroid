@@ -1,7 +1,6 @@
 package com.edu.tutorialaction.network;
 
 import android.app.Activity;
-
 import rx.Observer;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;

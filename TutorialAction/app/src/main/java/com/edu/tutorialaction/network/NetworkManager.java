@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 import retrofit.RestAdapter;
-import retrofit.RetrofitError;
 import retrofit.client.OkClient;
 import retrofit.http.DELETE;
 import retrofit.http.Field;
@@ -66,7 +65,9 @@ public enum NetworkManager {
 
 
     public interface RestClient {
-        String ENDPOINT = "http://pieta.dalumetsisi.es";
+
+        //TODO: SET ENDPOINT URL
+        String ENDPOINT = "API_ENDPOINT";
 
         @FormUrlEncoded
         @POST("/login")

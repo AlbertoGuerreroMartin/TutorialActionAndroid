@@ -1,7 +1,6 @@
 package com.edu.tutorialaction.network;
 
 import android.support.v4.app.Fragment;
-
 import rx.Observer;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;

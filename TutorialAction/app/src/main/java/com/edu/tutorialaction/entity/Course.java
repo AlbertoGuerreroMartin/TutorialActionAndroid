@@ -3,7 +3,6 @@ package com.edu.tutorialaction.entity;
 import com.edu.tutorialaction.util.SimpleSerializer;
 import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
-
 import java.util.List;
 
 /**
