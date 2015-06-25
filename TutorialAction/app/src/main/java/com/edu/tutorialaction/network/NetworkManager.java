@@ -67,7 +67,7 @@ public enum NetworkManager {
     public interface RestClient {
 
         //TODO: SET ENDPOINT URL
-        String ENDPOINT = "API_ENDPOINT";
+        String ENDPOINT = "http://pieta.dalumetsisi.es";
 
         @FormUrlEncoded
         @POST("/login")
